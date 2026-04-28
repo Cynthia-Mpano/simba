@@ -15,15 +15,19 @@ export default function SignIn() {
     e.preventDefault();
     setError('');
     setLoading(true);
-    await new Promise(r => setTimeout(r, 800));
-    // Simulate auth — in production connect to real backend
+    await new Promise(r => setTimeout(r, 600));
+    // Seed admin account if not exists
     const users = JSON.parse(localStorage.getItem('users') || '[]');
+    if (!users.find(u => u.email === 'admin@simba.rw')) {
+      users.push({ name: 'Admin', email: 'admin@simba.rw', phone: '+250788000000', password: 'admin123', role: 'admin' });
+      localStorage.setItem('users', JSON.stringify(users));
+    }
     const found = users.find(u => u.email === form.email && u.password === form.password);
     if (found) {
-      login({ name: found.name, email: found.email, phone: found.phone });
+      login({ name: found.name, email: found.email, phone: found.phone, role: found.role || 'user' });
       navigate('/');
     } else {
-      setError('Invalid email or password. Please try again.');
+      setError('Invalid email or password.');
     }
     setLoading(false);
   };
@@ -65,6 +69,9 @@ export default function SignIn() {
           {t.dontHave}{' '}
           <Link to="/signup" className="text-orange-500 hover:text-orange-600 font-medium">{t.signUp}</Link>
         </p>
+        <div className={`mt-4 p-3 rounded-xl text-xs text-center ${darkMode ? 'bg-gray-700 text-gray-400' : 'bg-gray-50 text-gray-500'}`}>
+          Admin demo: <strong>admin@simba.rw</strong> / <strong>admin123</strong>
+        </div>
       </div>
     </div>
   );

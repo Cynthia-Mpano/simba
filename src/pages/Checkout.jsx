@@ -123,6 +123,7 @@ export default function Checkout() {
                     <div className="space-y-3 mb-6">
                       {[
                         { id: 'momo', label: t.mobileMoneyMTN, icon: '📱', desc: 'Pay with MTN Mobile Money' },
+                        { id: 'airtel', label: t.airtelMoney, icon: '📲', desc: 'Pay with Airtel Money' },
                         { id: 'cod', label: t.cashOnDelivery, icon: '💵', desc: 'Pay when your order arrives' }
                       ].map(m => (
                         <label key={m.id} className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === m.id ? 'border-orange-500 bg-orange-50' : darkMode ? 'border-gray-700 bg-gray-700' : 'border-gray-200 bg-gray-50'}`}>
@@ -137,18 +138,20 @@ export default function Checkout() {
                       ))}
                     </div>
 
-                    {payMethod === 'momo' && (
+                    {(payMethod === 'momo' || payMethod === 'airtel') && (
                       <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-orange-50'}`}>
                         <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                          <Phone size={14} className="inline mr-1" /> {t.enterPhone}
+                          <Phone size={14} className="inline mr-1" /> {payMethod === 'momo' ? t.enterPhone : t.enterAirtel}
                         </label>
                         <div className="flex">
                           <span className={`px-3 py-2 rounded-l-lg border text-sm font-medium ${darkMode ? 'bg-gray-600 border-gray-500 text-gray-300' : 'bg-gray-100 border-gray-200 text-gray-600'}`}>+250</span>
-                          <input type="tel" required={payMethod === 'momo'} value={momoNumber} onChange={e => setMomoNumber(e.target.value)}
-                            placeholder="078 000 0000" pattern="[0-9]{9,10}"
+                          <input type="tel" required={payMethod === 'momo' || payMethod === 'airtel'} value={momoNumber} onChange={e => setMomoNumber(e.target.value)}
+                            placeholder={payMethod === 'momo' ? "078 000 0000" : "073 000 0000"} pattern="[0-9]{9,10}"
                             className={`flex-1 px-4 py-2 rounded-r-lg border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200'}`} />
                         </div>
-                        <p className={`text-xs mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>You will receive a USSD prompt to confirm payment of {total.toLocaleString()} RWF</p>
+                        <p className={`text-xs mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          You will receive a USSD prompt to confirm payment of {total.toLocaleString()} RWF via {payMethod === 'momo' ? 'MTN MoMo' : 'Airtel Money'}
+                        </p>
                       </div>
                     )}
                   </div>

@@ -1,99 +1,119 @@
-import { Link } from 'react-router-dom';
-import { ShoppingBag, Truck, Shield, Clock, ArrowRight } from 'lucide-react';
-import { useApp } from '../context/AppContext';
-import productsData from '../simba_products.json';
+﻿import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Truck, Shield, Clock, ShoppingBag, ArrowRight, Star } from "lucide-react";
+import { useApp } from "../context/AppContext";
+import ProductCard, { ProductCardSkeleton } from "../components/ProductCard";
+import productsData from "../simba_products.json";
+
+const PAGE_SIZE = 50;
+
+const CAT_IMGS = {
+  "Food Products": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80",
+  "Alcoholic Drinks": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80",
+  "Baby Products": "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80",
+  "Cosmetics & Personal Care": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&q=80",
+  "Sports & Wellness": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+  "Kitchenware & Electronics": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80",
+  "General": "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=400&q=80",
+};
 
 export default function Home() {
   const { darkMode, t } = useApp();
-  const products = productsData.products.slice(0, 8);
-  const categories = [...new Set(productsData.products.map(p => p.category))];
+  const [visible, setVisible] = useState(PAGE_SIZE);
+  const all = productsData.products;
+  const cats = [...new Set(all.map(p => p.category))];
+  const shown = all.slice(0, visible);
+  const dm = darkMode;
 
   return (
-    <div className={darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}>
+    <div className={dm ? "bg-gray-950 min-h-screen" : "bg-gray-50 min-h-screen"}>
       {/* Hero */}
-      <div className={`relative ${darkMode ? 'bg-gradient-to-r from-orange-900 to-orange-700' : 'bg-gradient-to-r from-orange-500 to-orange-400'} text-white`}>
-        <div className="max-w-7xl mx-auto px-4 py-20 md:py-28">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">{t.heroTitle}</h1>
-            <p className="text-lg md:text-xl mb-8 opacity-90">{t.heroSub}</p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/shop" className="bg-white text-orange-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors flex items-center gap-2">
-                {t.shopNow} <ArrowRight size={18} />
+      <section className="relative overflow-hidden bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500">
+        <div className="absolute inset-0 opacity-10" style={{backgroundImage:"radial-gradient(circle,white 1px,transparent 1px)",backgroundSize:"40px 40px"}} />
+        <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-28">
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full mb-5 border border-white/30">
+              <Star size={11} fill="white" /> Rwanda&apos;s #1 Online Supermarket
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight mb-4">{t.heroTitle}</h1>
+            <p className="text-base text-white/85 mb-7 leading-relaxed">{t.heroSub}</p>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/shop" className="inline-flex items-center gap-2 bg-white text-orange-600 px-6 py-3 rounded-xl font-bold hover:bg-orange-50 transition-all shadow-lg hover:scale-105">
+                {t.shopNow} <ArrowRight size={17} />
               </Link>
-              <Link to="/about" className="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-orange-600 transition-colors">
+              <Link to="/about" className="inline-flex items-center gap-2 border-2 border-white/60 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/10 transition-all">
                 {t.learnMore}
               </Link>
             </div>
           </div>
         </div>
-      </div>
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-gray-50 to-transparent dark:from-gray-950" />
+      </section>
 
       {/* Features */}
-      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { icon: Truck, title: 'Free Delivery', desc: 'On orders over 50,000 RWF' },
-          { icon: Shield, title: 'Secure Payment', desc: 'MTN MoMo & Cash on Delivery' },
-          { icon: Clock, title: 'Fast Service', desc: 'Same-day delivery available' },
-          { icon: ShoppingBag, title: '11 Branches', desc: 'Across Kigali city' }
-        ].map((f, i) => (
-          <div key={i} className={`p-6 rounded-xl text-center ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
-            <div className="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <f.icon className="text-orange-500" size={24} />
+      <section className="max-w-7xl mx-auto px-4 py-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {[
+            { icon: Truck, title: "Free Delivery", desc: "Orders over 50,000 RWF", c: "text-blue-500", bg: dm?"bg-blue-950/40":"bg-blue-50" },
+            { icon: Shield, title: "Secure Payment", desc: "MoMo & Airtel Money", c: "text-green-500", bg: dm?"bg-green-950/40":"bg-green-50" },
+            { icon: Clock, title: "Fast Service", desc: "Same-day delivery", c: "text-purple-500", bg: dm?"bg-purple-950/40":"bg-purple-50" },
+            { icon: ShoppingBag, title: "11 Branches", desc: "Across Kigali", c: "text-orange-500", bg: dm?"bg-orange-950/40":"bg-orange-50" },
+          ].map((f,i) => (
+            <div key={i} className={`${dm?"bg-gray-900 border-gray-800":"bg-white border-gray-100"} border rounded-2xl p-4 flex items-center gap-3`}>
+              <div className={`w-10 h-10 ${f.bg} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                <f.icon className={f.c} size={19} />
+              </div>
+              <div>
+                <p className={`font-semibold text-sm ${dm?"text-gray-100":"text-gray-800"}`}>{f.title}</p>
+                <p className={`text-xs ${dm?"text-gray-500":"text-gray-500"}`}>{f.desc}</p>
+              </div>
             </div>
-            <h3 className="font-semibold mb-1">{f.title}</h3>
-            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{f.desc}</p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </section>
 
       {/* Categories */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold">{t.shopByCategory}</h2>
-          <Link to="/shop" className="text-orange-500 hover:text-orange-600 font-medium flex items-center gap-1">
-            {t.viewAll} <ArrowRight size={16} />
-          </Link>
+      <section className="max-w-7xl mx-auto px-4 pb-8">
+        <div className="flex items-center justify-between mb-5">
+          <h2 className={`text-xl font-black ${dm?"text-white":"text-gray-900"}`}>{t.shopByCategory}</h2>
+          <Link to="/shop" className="text-orange-500 hover:text-orange-600 text-sm font-semibold flex items-center gap-1">{t.viewAll} <ArrowRight size={14} /></Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {categories.slice(0, 6).map(cat => (
-            <Link key={cat} to={`/shop?category=${encodeURIComponent(cat)}`}
-              className={`p-6 rounded-xl text-center hover:shadow-lg transition-all ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-50 hover:bg-white'}`}>
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <ShoppingBag className="text-orange-500" size={28} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+          {cats.map(cat => (
+            <Link key={cat} to={"/shop?category="+encodeURIComponent(cat)}
+              className="group relative overflow-hidden rounded-2xl aspect-square flex items-end p-3 hover:scale-105 transition-transform duration-200">
+              <div className="absolute inset-0">
+                <img src={CAT_IMGS[cat]||CAT_IMGS["General"]} alt={cat} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               </div>
-              <h3 className="font-medium text-sm">{cat}</h3>
+              <span className="relative text-white text-[11px] font-bold leading-tight">{cat}</span>
             </Link>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Featured Products */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold">{t.featuredProducts}</h2>
-          <Link to="/shop" className="text-orange-500 hover:text-orange-600 font-medium flex items-center gap-1">
-            {t.viewAll} <ArrowRight size={16} />
-          </Link>
+      {/* Products */}
+      <section className="max-w-7xl mx-auto px-4 pb-16">
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <h2 className={`text-xl font-black ${dm?"text-white":"text-gray-900"}`}>{t.featuredProducts}</h2>
+            <p className={`text-xs mt-0.5 ${dm?"text-gray-500":"text-gray-500"}`}>{t.showing} {shown.length} {t.of} {all.length} {t.products}</p>
+          </div>
+          <Link to="/shop" className="text-orange-500 hover:text-orange-600 text-sm font-semibold flex items-center gap-1">{t.viewAll} <ArrowRight size={14} /></Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {products.map(p => (
-            <Link key={p.id} to={`/product/${p.id}`}
-              className={`rounded-xl overflow-hidden hover:shadow-xl transition-all ${darkMode ? 'bg-gray-800' : 'bg-white border border-gray-100'}`}>
-              <div className="aspect-square bg-gray-100 overflow-hidden">
-                <img src={p.image} alt={p.name} className="w-full h-full object-cover hover:scale-105 transition-transform" />
-              </div>
-              <div className="p-4">
-                <h3 className="font-medium text-sm mb-1 line-clamp-2">{p.name}</h3>
-                <p className={`text-xs mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{p.category}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-orange-500 font-bold">{p.price.toLocaleString()} RWF</span>
-                  {p.inStock && <span className="text-xs text-green-500">● {t.inStock}</span>}
-                </div>
-              </div>
-            </Link>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          {shown.map(p => <ProductCard key={p.id} product={p} />)}
         </div>
-      </div>
+        {visible < all.length && (
+          <div className="text-center mt-10">
+            <button onClick={() => setVisible(v => v + PAGE_SIZE)}
+              className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl font-bold transition-all hover:scale-105 shadow-md shadow-orange-200">
+              {t.seeMore} <ArrowRight size={17} />
+            </button>
+            <p className={`text-xs mt-2 ${dm?"text-gray-600":"text-gray-400"}`}>{all.length - visible} more products</p>
+          </div>
+        )}
+      </section>
     </div>
   );
 }

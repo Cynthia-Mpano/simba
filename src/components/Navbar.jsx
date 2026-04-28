@@ -1,78 +1,94 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, Menu, X, Sun, Moon, Globe, User, LogOut, ChevronDown } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingCart, Search, Menu, X, Sun, Moon, Globe, User, LogOut, ChevronDown, LayoutDashboard } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function Navbar() {
-  const { darkMode, setDarkMode, language, setLanguage, t, cartCount, user, logout } = useApp();
+  const { darkMode, setDarkMode, language, setLanguage, t, cartCount, user, logout, isAdmin } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [q, setQ] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const langRef = useRef(null);
+  const userRef = useRef(null);
+
+  useEffect(() => { setMenuOpen(false); }, [location.pathname]);
+
+  useEffect(() => {
+    const fn = (e) => {
+      if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
+      if (userRef.current && !userRef.current.contains(e.target)) setUserOpen(false);
+    };
+    document.addEventListener('mousedown', fn);
+    return () => document.removeEventListener('mousedown', fn);
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
-      setMenuOpen(false);
-    }
+    if (q.trim()) { navigate(`/shop?search=${encodeURIComponent(q.trim())}`); setQ(''); setMenuOpen(false); }
   };
 
-  const langs = [{ code: 'en', label: 'English' }, { code: 'fr', label: 'Français' }, { code: 'rw', label: 'Kinyarwanda' }];
+  const langs = [{ code: 'en', label: 'English', flag: '🇬🇧' }, { code: 'fr', label: 'Français', flag: '🇫🇷' }, { code: 'rw', label: 'Kinyarwanda', flag: '🇷🇼' }];
+  const links = [['/','Home'],['/shop',t.shop],['/about',t.about],['/contact',t.contact]];
+  const active = (p) => p === '/' ? location.pathname === '/' : location.pathname.startsWith(p);
+
+  const dm = darkMode;
 
   return (
-    <nav className={`sticky top-0 z-50 shadow-md ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      {/* Top bar */}
-      <div className={`text-xs py-1 px-4 text-center ${darkMode ? 'bg-orange-700' : 'bg-orange-500'} text-white`}>
-        🦁 Rwanda's #1 Online Supermarket — Free delivery on orders over 50,000 RWF
+    <nav className={`sticky top-0 z-50 ${dm ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} border-b`}>
+      {/* Promo bar */}
+      <div className="bg-orange-500 text-white text-xs py-1.5 text-center font-medium">
+        🦁 {t.freeDelivery} &nbsp;·&nbsp; 11 branches across Rwanda
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-3">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-lg">S</div>
+          <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-sm">S</div>
           <div className="hidden sm:block">
-            <div className="font-bold text-lg leading-tight text-orange-500">SIMBA</div>
-            <div className={`text-xs leading-tight ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Supermarket</div>
+            <div className="font-black text-sm tracking-tight text-orange-500 leading-none">SIMBA</div>
+            <div className={`text-[10px] tracking-widest uppercase ${dm ? 'text-gray-500' : 'text-gray-400'}`}>Supermarket</div>
           </div>
         </Link>
 
+        {/* Desktop links */}
+        <div className="hidden lg:flex items-center gap-0.5 ml-2">
+          {links.map(([p, l]) => (
+            <Link key={p} to={p} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${active(p) ? 'bg-orange-50 text-orange-600' : dm ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}>{l}</Link>
+          ))}
+        </div>
+
         {/* Search */}
-        <form onSubmit={handleSearch} className="flex-1 max-w-xl hidden md:flex">
-          <div className="relative w-full">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder={t.search}
-              className={`w-full pl-4 pr-12 py-2 rounded-full border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 ${darkMode ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' : 'bg-gray-50 border-gray-200 text-gray-900'}`}
-            />
-            <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-orange-500">
-              <Search size={18} />
-            </button>
+        <form onSubmit={handleSearch} className="flex-1 max-w-md hidden md:flex mx-3">
+          <div className={`relative flex items-center w-full rounded-xl border ${dm ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-100 transition-all`}>
+            <Search size={15} className={`absolute left-3 ${dm ? 'text-gray-500' : 'text-gray-400'}`} />
+            <input type="text" value={q} onChange={e => setQ(e.target.value)} placeholder={t.search}
+              className={`w-full pl-9 pr-4 py-2.5 bg-transparent text-sm focus:outline-none ${dm ? 'text-white placeholder-gray-500' : 'text-gray-900 placeholder-gray-400'}`} />
+            {q && <button type="submit" className="mr-2 bg-orange-500 text-white text-xs px-3 py-1 rounded-lg hover:bg-orange-600 transition-colors">Go</button>}
           </div>
         </form>
 
-        {/* Right actions */}
-        <div className="flex items-center gap-2 ml-auto">
+        {/* Actions */}
+        <div className="flex items-center gap-1 ml-auto">
           {/* Dark mode */}
-          <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-full ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
-            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          <button onClick={() => setDarkMode(!dm)} className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${dm ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+            {dm ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
           {/* Language */}
-          <div className="relative">
-            <button onClick={() => { setLangOpen(!langOpen); setUserOpen(false); }} className={`p-2 rounded-full flex items-center gap-1 text-sm ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
-              <Globe size={18} />
-              <span className="hidden sm:inline uppercase text-xs font-semibold">{language}</span>
+          <div className="relative" ref={langRef}>
+            <button onClick={() => { setLangOpen(!langOpen); setUserOpen(false); }} className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${dm ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+              <Globe size={16} />
             </button>
             {langOpen && (
-              <div className={`absolute right-0 mt-1 w-40 rounded-lg shadow-lg border z-50 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+              <div className={`absolute right-0 top-11 w-44 rounded-xl shadow-xl border z-50 overflow-hidden ${dm ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-100'}`}>
                 {langs.map(l => (
                   <button key={l.code} onClick={() => { setLanguage(l.code); setLangOpen(false); }}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 ${language === l.code ? 'text-orange-500 font-semibold' : ''} ${darkMode ? 'hover:bg-gray-700' : ''}`}>
-                    {l.label}
+                    className={`w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors ${language === l.code ? 'bg-orange-50 text-orange-600 font-semibold' : dm ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-50'}`}>
+                    <span>{l.flag}</span>{l.label}
+                    {language === l.code && <span className="ml-auto w-1.5 h-1.5 bg-orange-500 rounded-full" />}
                   </button>
                 ))}
               </div>
@@ -80,67 +96,64 @@ export default function Navbar() {
           </div>
 
           {/* Cart */}
-          <Link to="/cart" className="relative p-2">
-            <ShoppingCart size={22} className={darkMode ? 'text-white' : 'text-gray-700'} />
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                {cartCount > 99 ? '99+' : cartCount}
-              </span>
-            )}
+          <Link to="/cart" className={`relative w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${dm ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+            <ShoppingCart size={17} />
+            {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] rounded-full min-w-[18px] h-[18px] flex items-center justify-center font-bold px-0.5">{cartCount > 99 ? '99+' : cartCount}</span>}
           </Link>
 
           {/* User */}
           {user ? (
-            <div className="relative">
-              <button onClick={() => { setUserOpen(!userOpen); setLangOpen(false); }} className={`flex items-center gap-1 p-2 rounded-full ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
-                <div className="w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                  {user.name?.[0]?.toUpperCase() || 'U'}
-                </div>
-                <ChevronDown size={14} />
+            <div className="relative" ref={userRef}>
+              <button onClick={() => { setUserOpen(!userOpen); setLangOpen(false); }} className={`flex items-center gap-1.5 px-2 py-1.5 rounded-xl transition-colors ${dm ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
+                <div className="w-7 h-7 bg-orange-500 rounded-lg flex items-center justify-center text-white text-xs font-bold">{user.name?.[0]?.toUpperCase() || 'U'}</div>
+                <ChevronDown size={13} className={dm ? 'text-gray-500' : 'text-gray-400'} />
               </button>
               {userOpen && (
-                <div className={`absolute right-0 mt-1 w-44 rounded-lg shadow-lg border z-50 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-                  <div className={`px-4 py-2 text-sm font-semibold border-b ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>{user.name}</div>
-                  <button onClick={() => { logout(); setUserOpen(false); }} className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 text-red-500 hover:bg-red-50 ${darkMode ? 'hover:bg-gray-700' : ''}`}>
-                    <LogOut size={14} /> {t.signOut}
+                <div className={`absolute right-0 top-11 w-52 rounded-xl shadow-xl border z-50 overflow-hidden ${dm ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-100'}`}>
+                  <div className={`px-4 py-3 border-b ${dm ? 'border-gray-800' : 'border-gray-100'}`}>
+                    <p className={`text-sm font-semibold ${dm ? 'text-white' : 'text-gray-900'}`}>{user.name}</p>
+                    <p className={`text-xs mt-0.5 ${dm ? 'text-gray-500' : 'text-gray-400'}`}>{user.email}</p>
+                    <span className={`inline-block mt-1.5 text-[10px] px-2 py-0.5 rounded-full font-semibold ${isAdmin ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'}`}>
+                      {isAdmin ? t.roleAdmin : t.roleUser}
+                    </span>
+                  </div>
+                  {isAdmin && (
+                    <Link to="/admin" onClick={() => setUserOpen(false)} className={`flex items-center gap-2 px-4 py-2.5 text-sm transition-colors ${dm ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-50'}`}>
+                      <LayoutDashboard size={14} className="text-purple-500" />{t.adminPanel}
+                    </Link>
+                  )}
+                  <button onClick={() => { logout(); setUserOpen(false); }} className={`w-full text-left flex items-center gap-2 px-4 py-2.5 text-sm text-red-500 transition-colors ${dm ? 'hover:bg-gray-800' : 'hover:bg-red-50'}`}>
+                    <LogOut size={14} />{t.signOut}
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <Link to="/signin" className="hidden sm:flex items-center gap-1 bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 rounded-full text-sm font-medium transition-colors">
-              <User size={15} /> {t.signIn}
+            <Link to="/signin" className="hidden sm:flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors">
+              <User size={14} />{t.signIn}
             </Link>
           )}
 
-          {/* Mobile menu toggle */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-2">
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          {/* Mobile toggle */}
+          <button onClick={() => setMenuOpen(!menuOpen)} className={`lg:hidden w-9 h-9 rounded-xl flex items-center justify-center ${dm ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
-        </div>
-      </div>
-
-      {/* Nav links */}
-      <div className={`hidden md:flex border-t ${darkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-100 bg-white'}`}>
-        <div className="max-w-7xl mx-auto px-4 flex gap-6 py-2">
-          {[['/', t.home], ['/shop', t.shop], ['/about', t.about], ['/contact', t.contact]].map(([path, label]) => (
-            <Link key={path} to={path} className={`text-sm font-medium hover:text-orange-500 transition-colors ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{label}</Link>
-          ))}
         </div>
       </div>
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className={`md:hidden border-t px-4 py-4 space-y-3 ${darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-100'}`}>
-          <form onSubmit={handleSearch} className="flex">
-            <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder={t.search}
-              className={`flex-1 pl-4 pr-4 py-2 rounded-l-full border text-sm focus:outline-none ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-gray-50 border-gray-200'}`} />
-            <button type="submit" className="bg-orange-500 text-white px-4 rounded-r-full"><Search size={16} /></button>
+        <div className={`lg:hidden border-t ${dm ? 'border-gray-800 bg-gray-900' : 'border-gray-100 bg-white'} px-4 py-4 space-y-1`}>
+          <form onSubmit={handleSearch} className="flex mb-3">
+            <input type="text" value={q} onChange={e => setQ(e.target.value)} placeholder={t.search}
+              className={`flex-1 pl-4 py-2.5 rounded-l-xl border text-sm focus:outline-none ${dm ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500' : 'bg-gray-50 border-gray-200'}`} />
+            <button type="submit" className="bg-orange-500 text-white px-4 rounded-r-xl hover:bg-orange-600"><Search size={15} /></button>
           </form>
-          {[['/', t.home], ['/shop', t.shop], ['/about', t.about], ['/contact', t.contact]].map(([path, label]) => (
-            <Link key={path} to={path} onClick={() => setMenuOpen(false)} className={`block py-2 text-sm font-medium hover:text-orange-500 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{label}</Link>
+          {links.map(([p, l]) => (
+            <Link key={p} to={p} className={`flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${active(p) ? 'bg-orange-50 text-orange-600' : dm ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'}`}>{l}</Link>
           ))}
-          {!user && <Link to="/signin" onClick={() => setMenuOpen(false)} className="block bg-orange-500 text-white text-center py-2 rounded-full text-sm font-medium">{t.signIn}</Link>}
+          {isAdmin && <Link to="/admin" className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium ${dm ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'}`}><LayoutDashboard size={14} className="text-purple-500" />{t.adminPanel}</Link>}
+          {!user && <Link to="/signin" className="block bg-orange-500 text-white text-center py-2.5 rounded-xl text-sm font-semibold mt-2">{t.signIn}</Link>}
         </div>
       )}
     </nav>
