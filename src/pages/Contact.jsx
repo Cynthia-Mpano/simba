@@ -30,7 +30,7 @@ export default function Contact() {
     <div className={'min-h-screen ' + (dm ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900')}>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85" alt="Contact" className="w-full h-full object-cover" />
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85" alt="Contact" className="w-full h-full object-cover hero-img" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 to-slate-950/60" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20">

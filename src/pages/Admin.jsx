@@ -256,7 +256,7 @@ export default function Admin() {
                {/* Photo Slideshow Banner */}
                <div className='relative rounded-2xl overflow-hidden h-48 md:h-64'>
                  <div className={`absolute inset-0 transition-opacity duration-500 ${dbFade ? 'opacity-100' : 'opacity-0'}`}>
-                   <img src={photo.img} alt={photo.label} className='w-full h-full object-cover' />
+                   <img src={photo.img} alt={photo.label} className='w-full h-full object-cover hero-img' />
                    <div className='absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent' />
                  </div>
                  <div className='absolute inset-0 flex flex-col justify-center px-8'>
