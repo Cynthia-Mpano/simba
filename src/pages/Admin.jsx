@@ -4,6 +4,7 @@ import { LayoutDashboard, ShoppingBag, Package, TrendingUp, AlertCircle, ArrowLe
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
 import { useApp } from "../context/AppContext";
 import productsData from "../simba_products.json";
+import LiveOrdersTab from "./LiveOrders";
 
 const DASHBOARD_PHOTOS = [
   { img: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1400&q=85", label: "Supermarket Aisle" },
@@ -167,6 +168,7 @@ export default function Admin() {
     { id: "orders", label: "Orders", icon: ShoppingBag },
     { id: "products", label: "Products", icon: Package },
     { id: "settings", label: "Settings", icon: Settings },
+    { id: "live", label: t.liveOrders || "Live Orders", icon: Users },
   ];
 
   return (
@@ -520,6 +522,12 @@ export default function Admin() {
                 </div>
               </div>
             </div>
+          )}
+
+
+          {/* ===== LIVE ORDERS TAB ===== */}
+          {tab === 'live' && (
+            <LiveOrdersTab />
           )}
 
           {/* ===== SETTINGS TAB ===== */}

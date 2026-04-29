@@ -1,3 +1,13 @@
+
+import os
+
+def w(path, content):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    open(path, 'w', encoding='utf-8').write(content)
+    print(f"wrote {path} ({len(content.splitlines())} lines)")
+
+# ─── AppContext ────────────────────────────────────────────────────────────────
+w("simba-supermarket/src/context/AppContext.jsx", r"""
 import { createContext, useContext, useState, useEffect } from "react";
 const AppContext = createContext();
 
@@ -250,3 +260,6 @@ function generateMockOrders() {
 }
 
 export const useApp = () => useContext(AppContext);
+""".lstrip("\n"))
+
+print("AppContext done")

@@ -1,3 +1,5 @@
+
+code = r"""
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Check, Phone, CreditCard, Truck, ArrowRight, CheckCircle, XCircle, Loader, ShoppingBag } from 'lucide-react';
@@ -413,3 +415,7 @@ export default function Checkout() {
     </div>
   );
 }
+""".lstrip("\n")
+
+open("simba-supermarket/src/pages/Checkout.jsx", "w", encoding="utf-8").write(code)
+print(f"Checkout: {len(code.splitlines())} lines")
