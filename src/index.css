@@ -160,6 +160,129 @@ form button[type="button"] {
   filter: brightness(1.18) saturate(1.08) contrast(1.02);
 }
 
+/* ── Search bar inputs ──────────────────────────────────── */
+/*  Applies to every search <input> across the site        */
+input[type="search"],
+input[type="text"][placeholder*="Search"],
+input[type="text"][placeholder*="search"],
+input[type="text"][placeholder*="Rechercher"],
+input[type="text"][placeholder*="Shakisha"] {
+  padding:     0.5rem 1rem 0.5rem 2.5rem; /* left room for the icon */
+  line-height: 1.5;
+}
+
+/*  Placeholder: lighter colour, no overlap                */
+input[type="search"]::placeholder,
+input[type="text"]::placeholder {
+  color:       #94a3b8;   /* slate-400 — visible but clearly secondary */
+  opacity:     1;         /* Firefox resets opacity by default          */
+  font-size:   0.875rem;
+  line-height: 1.5;
+}
+
+.dark input[type="search"]::placeholder,
+.dark input[type="text"]::placeholder {
+  color: #475569;         /* slate-600 for dark backgrounds             */
+}
+
+/* ── Banner / hero call-to-action holders ───────────────── */
+/*  Any element with .banner, .hero-banner, or .cta-banner  */
+.banner,
+.hero-banner,
+.cta-banner {
+  min-height:      200px;
+  padding:         2rem;
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  text-align:      center;
+  font-size:       1.25rem;
+  line-height:     1.5;
+}
+
+/*  Also target the promo / announcement bar at the top of
+    the navbar so it has breathing room on small screens   */
+nav > div:first-child {
+  min-height:  2.25rem;
+  padding-top:    0.5rem;
+  padding-bottom: 0.5rem;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  font-size:       0.8125rem; /* 13px — readable without being huge */
+  line-height:     1.5;
+}
+
+/*  Hero sections that already use absolute-positioned
+    content (Home, About, Contact) — ensure inner wrapper
+    is always vertically centred and has enough padding    */
+section.relative > .relative,
+section.relative > div.relative {
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center;
+  min-height:      200px;
+  padding-top:     2rem;
+  padding-bottom:  2rem;
+}
+
+/* ── Contact / checkout form — reinforce spacing ────────── */
+/*  (Supplements the rules already set above)              */
+form label {
+  display:       block;
+  line-height:   1.5;
+  margin-bottom: 1rem;
+}
+
+form input:not([type="radio"]):not([type="checkbox"]),
+form textarea,
+form select {
+  display:       block;
+  width:         100%;
+  padding:       0.5rem 1rem;
+  line-height:   1.5;
+  margin-bottom: 1rem;
+}
+
+form textarea {
+  resize: vertical;
+}
+
+/* Remove the extra bottom margin from the very last field
+   so the submit button's margin-top is the only gap       */
+form input:last-of-type:not([type="radio"]):not([type="checkbox"]),
+form textarea:last-of-type {
+  margin-bottom: 0;
+}
+
+form button[type="submit"],
+form button[type="button"] {
+  padding:     0.5rem 1rem;
+  margin-top:  1rem;
+  line-height: 1.5;
+  width:       100%;
+}
+
+/* ── Responsive adjustments ─────────────────────────────── */
+@media (max-width: 640px) {
+  .banner,
+  .hero-banner,
+  .cta-banner {
+    padding:   1.25rem 1rem;
+    font-size: 1.0625rem;  /* slightly smaller on phones */
+  }
+
+  /* Search input: full width on mobile */
+  input[type="search"],
+  input[type="text"][placeholder*="Search"],
+  input[type="text"][placeholder*="search"],
+  input[type="text"][placeholder*="Rechercher"],
+  input[type="text"][placeholder*="Shakisha"] {
+    width: 100%;
+  }
+}
+
 /* ── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar              { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track        { background: transparent; }
