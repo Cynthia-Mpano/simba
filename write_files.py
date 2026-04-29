@@ -1,3 +1,12 @@
+
+import os
+
+BASE = "src"
+
+files = {}
+
+# ─── NAVBAR ───────────────────────────────────────────────────────────────────
+files["components/Navbar.jsx"] = r"""
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ShoppingCart, Search, Menu, X, Sun, Moon, Globe, User, LogOut, ChevronDown, LayoutDashboard } from "lucide-react";
@@ -139,3 +148,139 @@ export default function Navbar() {
     </nav>
   );
 }
+"""
+
+# ─── FOOTER ───────────────────────────────────────────────────────────────────
+files["components/Footer.jsx"] = r"""
+import { Link } from "react-router-dom";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { useApp } from "../context/AppContext";
+
+export default function Footer() {
+  const { t } = useApp();
+  const branches = ["Simba Centenary","Simba Gishushu","Simba Kimironko","Simba Kicukiro","Simba Kigali Heights","Simba UTC","Simba Gacuriro","Simba Gikondo","Simba Sonatube","Simba Kisimenti","Simba Rebero"];
+  return (
+    <footer className="bg-slate-950 text-slate-400 mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div>
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center text-white font-black text-xl">S</div>
+            <div><div className="font-black text-white text-sm tracking-tight">SIMBA</div><div className="text-[10px] text-slate-500 tracking-widest uppercase">Supermarket</div></div>
+          </div>
+          <p className="text-sm leading-relaxed mb-5">Rwanda's largest supermarket chain. Quality products at affordable prices since 2007.</p>
+          <div className="flex items-center gap-2 text-xs"><Clock size={13} className="text-orange-400 flex-shrink-0" /><span>Open daily: 8:00 AM – 9:00 PM</span></div>
+        </div>
+        <div>
+          <h3 className="text-white font-semibold text-sm mb-4">Quick Links</h3>
+          <ul className="space-y-2.5 text-sm">
+            {[["/",t.home],["/shop",t.shop],["/about",t.about],["/contact",t.contact],["/cart",t.cart]].map(([p,l]) => (
+              <li key={p}><Link to={p} className="hover:text-orange-400 transition-colors">{l}</Link></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-white font-semibold text-sm mb-4">Our Branches</h3>
+          <ul className="space-y-1.5 text-xs">
+            {branches.map(b => (
+              <li key={b} className="flex items-center gap-1.5"><MapPin size={9} className="text-orange-400 flex-shrink-0" />{b}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-white font-semibold text-sm mb-4">Contact Us</h3>
+          <ul className="space-y-3 text-sm">
+            <li className="flex items-start gap-2.5"><MapPin size={14} className="text-orange-400 mt-0.5 flex-shrink-0" /><span>Union Trade Centre, 1 KN 4 Ave, Kigali, Rwanda</span></li>
+            <li className="flex items-center gap-2.5"><Phone size={14} className="text-orange-400" /><span>+250 788 000 000</span></li>
+            <li className="flex items-center gap-2.5"><Mail size={14} className="text-orange-400" /><span>info@simbasupermarket.rw</span></li>
+          </ul>
+          <div className="flex gap-2 mt-5">
+            {["f","in","𝕏"].map((s,i) => (
+              <a key={i} href="#" className="w-8 h-8 bg-slate-800 hover:bg-orange-500 rounded-lg flex items-center justify-center text-xs transition-colors">{s}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-slate-900 py-4 text-center text-xs text-slate-600">
+        © {new Date().getFullYear()} Simba Supermarket Ltd. All rights reserved. | Kigali, Rwanda
+      </div>
+    </footer>
+  );
+}
+"""
+
+# ─── PRODUCT CARD ─────────────────────────────────────────────────────────────
+files["components/ProductCard.jsx"] = r"""
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { ShoppingCart, Check } from "lucide-react";
+import { useApp } from "../context/AppContext";
+
+export function ProductCardSkeleton() {
+  return (
+    <div className="rounded-2xl overflow-hidden bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+      <div className="aspect-square skeleton" />
+      <div className="p-3 space-y-2">
+        <div className="h-2.5 skeleton rounded w-2/5" />
+        <div className="h-3.5 skeleton rounded w-full" />
+        <div className="h-3.5 skeleton rounded w-3/4" />
+        <div className="flex justify-between items-center pt-1">
+          <div className="h-5 skeleton rounded w-20" />
+          <div className="w-20 h-7 skeleton rounded-xl" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ProductCard({ product }) {
+  const { darkMode, t, addToCart } = useApp();
+  const [added, setAdded] = useState(false);
+  const [imgErr, setImgErr] = useState(false);
+  const dm = darkMode;
+
+  const handleAdd = e => {
+    e.preventDefault(); e.stopPropagation();
+    if (!product.inStock) return;
+    addToCart(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
+  return (
+    <Link to={`/product/${product.id}`}
+      className={`group rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${dm ? "bg-slate-800 border border-slate-700 hover:border-orange-500/40 hover:shadow-slate-900" : "bg-white border border-slate-100 hover:border-orange-200 hover:shadow-orange-50/80"}`}>
+      <div className="relative aspect-square overflow-hidden bg-slate-50 dark:bg-slate-700">
+        {!imgErr
+          ? <img src={product.image} alt={product.name} onError={() => setImgErr(true)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+          : <div className="w-full h-full flex items-center justify-center text-4xl">🛒</div>
+        }
+        {!product.inStock && (
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+            <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">{t.outOfStock}</span>
+          </div>
+        )}
+      </div>
+      <div className="p-3 flex flex-col flex-1">
+        <p className={`text-[10px] font-semibold uppercase tracking-wider mb-1 ${dm ? "text-slate-500" : "text-slate-400"}`}>{product.category}</p>
+        <h3 className={`text-xs font-semibold line-clamp-2 leading-snug flex-1 mb-2.5 ${dm ? "text-slate-100" : "text-slate-800"}`}>{product.name}</h3>
+        <div className="flex items-center justify-between gap-1">
+          <div className="leading-none">
+            <span className={`font-bold text-sm ${dm ? "text-orange-400" : "text-orange-500"}`}>{product.price.toLocaleString()}</span>
+            <span className={`text-[10px] ml-0.5 ${dm ? "text-slate-500" : "text-slate-400"}`}>RWF</span>
+          </div>
+          <button onClick={handleAdd} disabled={!product.inStock}
+            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold transition-all ${added ? "bg-emerald-500 text-white" : product.inStock ? "bg-orange-500 hover:bg-orange-600 text-white shadow-sm shadow-orange-200" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}>
+            {added ? <><Check size={11} />{t.addedToCart}</> : <><ShoppingCart size={11} />{t.addToCart}</>}
+          </button>
+        </div>
+      </div>
+    </Link>
+  );
+}
+"""
+
+for path, content in files.items():
+    full = os.path.join("simba-supermarket", BASE, path)
+    os.makedirs(os.path.dirname(full), exist_ok=True)
+    open(full, "w", encoding="utf-8").write(content.lstrip("\n"))
+    print(f"wrote {full}")

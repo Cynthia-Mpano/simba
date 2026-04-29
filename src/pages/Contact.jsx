@@ -1,124 +1,101 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, Check } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function Contact() {
   const { darkMode, t } = useApp();
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [form, setForm] = useState({ name:'', email:'', subject:'', message:'' });
+  const dm = darkMode;
+  const card = dm ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm';
+  const inp = 'w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 ' + (dm ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-slate-50 border-slate-200 text-slate-900');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
-    setForm({ name: '', email: '', subject: '', message: '' });
-  };
+  const submit = e => { e.preventDefault(); setSent(true); setTimeout(() => setSent(false), 3000); setForm({ name:'', email:'', subject:'', message:'' }); };
 
-  const locations = [
-    { name: 'Simba Centenary (HQ)', address: 'Union Trade Centre, 1 KN 4 Ave, Kigali', phone: '+250 788 000 001' },
-    { name: 'Simba Gishushu', address: 'KN 5 Rd, Kigali', phone: '+250 788 000 002' },
-    { name: 'Simba Kimironko', address: '342F+3V5, Kimironko, Kigali', phone: '+250 788 000 003' },
-    { name: 'Simba Kicukiro', address: '24Q5+R2R, Kigali', phone: '+250 788 000 004' },
-    { name: 'Simba Kigali Heights', address: '24XF+XVV, KG 192 St, Kigali', phone: '+250 788 000 005' },
-    { name: 'Simba UTC', address: '23H4+26V, Kigali', phone: '+250 788 000 006' },
-    { name: 'Simba Gacuriro', address: '24G3+MCV, Kigali', phone: '+250 788 000 007' },
-    { name: 'Simba Gikondo', address: 'KK 35 Ave, Kigali', phone: '+250 788 000 008' },
-    { name: 'Simba Sonatube', address: '24J3+Q3, Kigali', phone: '+250 788 000 009' },
-    { name: 'Simba Kisimenti', address: 'KG 541 St, Kigali', phone: '+250 788 000 010' },
-    { name: 'Simba Rebero', address: '8754+P7W, Gisenyi', phone: '+250 788 000 011' }
+  const locs = [
+    { name:'Simba Centenary (HQ)', address:'Union Trade Centre, 1 KN 4 Ave, Kigali', phone:'+250 788 000 001' },
+    { name:'Simba Gishushu', address:'KN 5 Rd, Kigali', phone:'+250 788 000 002' },
+    { name:'Simba Kimironko', address:'342F+3V5, Kimironko, Kigali', phone:'+250 788 000 003' },
+    { name:'Simba Kicukiro', address:'24Q5+R2R, Kigali', phone:'+250 788 000 004' },
+    { name:'Simba Kigali Heights', address:'24XF+XVV, KG 192 St, Kigali', phone:'+250 788 000 005' },
+    { name:'Simba UTC', address:'23H4+26V, Kigali', phone:'+250 788 000 006' },
+    { name:'Simba Gacuriro', address:'24G3+MCV, Kigali', phone:'+250 788 000 007' },
+    { name:'Simba Gikondo', address:'KK 35 Ave, Kigali', phone:'+250 788 000 008' },
+    { name:'Simba Sonatube', address:'24J3+Q3, Kigali', phone:'+250 788 000 009' },
+    { name:'Simba Kisimenti', address:'KG 541 St, Kigali', phone:'+250 788 000 010' },
+    { name:'Simba Rebero', address:'8754+P7W, Gisenyi', phone:'+250 788 000 011' },
   ];
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      {/* Hero */}
-      <div className={`${darkMode ? 'bg-gradient-to-r from-orange-900 to-orange-700' : 'bg-gradient-to-r from-orange-500 to-orange-400'} text-white py-16`}>
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold mb-2">{t.contact}</h1>
-          <p className="text-lg opacity-90">We're here to help — reach out anytime</p>
+    <div className={'min-h-screen ' + (dm ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900')}>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85" alt="Contact" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 to-slate-950/60" />
         </div>
-      </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20">
+          <h1 className="text-4xl font-black text-white mb-2">{t.contact}</h1>
+          <p className="text-slate-300 text-base">We're here to help — reach out anytime</p>
+        </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-10 mb-16">
-          {/* Contact form */}
-          <div className={`rounded-2xl p-8 ${darkMode ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-            <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div className="grid lg:grid-cols-2 gap-8 mb-14">
+          <div className={'rounded-2xl border p-8 ' + card}>
+            <h2 className={'text-xl font-black mb-6 ' + (dm ? 'text-white' : 'text-slate-900')}>Send us a message</h2>
             {sent ? (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Check className="text-green-500" size={32} />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Message sent!</h3>
-                <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>We'll get back to you within 24 hours.</p>
+              <div className="text-center py-10">
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><Check className="text-emerald-500" size={30} /></div>
+                <h3 className={'text-lg font-bold mb-1 ' + (dm ? 'text-white' : 'text-slate-900')}>Message sent!</h3>
+                <p className={'text-sm ' + (dm ? 'text-slate-400' : 'text-slate-500')}>We'll get back to you within 24 hours.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {[['name', 'Your Name', 'text'], ['email', 'Email Address', 'email'], ['subject', 'Subject', 'text']].map(([key, placeholder, type]) => (
-                  <div key={key}>
-                    <input type={type} required placeholder={placeholder} value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                      className={`w-full px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-gray-50 border-gray-200'}`} />
-                  </div>
+              <form onSubmit={submit} className="space-y-4">
+                {[['name','Your Name','text'],['email','Email Address','email'],['subject','Subject','text']].map(([k,ph,tp]) => (
+                  <div key={k}><input type={tp} required placeholder={ph} value={form[k]} onChange={e => setForm(f=>({...f,[k]:e.target.value}))} className={inp} /></div>
                 ))}
-                <textarea required rows={5} placeholder="Your message..." value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                  className={`w-full px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-gray-50 border-gray-200'}`} />
-                <button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-colors">
+                <textarea required rows={5} placeholder="Your message..." value={form.message} onChange={e => setForm(f=>({...f,message:e.target.value}))}
+                  className={inp + ' resize-none'} />
+                <button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
                   <Send size={16} /> Send Message
                 </button>
               </form>
             )}
           </div>
 
-          {/* Info */}
-          <div className="space-y-6">
-            <div className={`rounded-2xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-              <h2 className="text-xl font-bold mb-4">Get in Touch</h2>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <MapPin className="text-orange-500 flex-shrink-0 mt-0.5" size={20} />
+          <div className={'rounded-2xl border p-8 ' + card}>
+            <h2 className={'text-xl font-black mb-6 ' + (dm ? 'text-white' : 'text-slate-900')}>Get in Touch</h2>
+            <div className="space-y-5">
+              {[
+                { icon:MapPin, label:'Head Office', val:'Union Trade Centre, 1 KN 4 Ave, Kigali, Rwanda' },
+                { icon:Phone, label:'Phone', val:'+250 788 000 000' },
+                { icon:Mail, label:'Email', val:'info@simbasupermarket.rw' },
+                { icon:Clock, label:'Opening Hours', val:'Monday – Sunday: 8:00 AM – 9:00 PM' },
+              ].map((item,i) => (
+                <div key={i} className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0"><item.icon className="text-orange-500" size={17} /></div>
                   <div>
-                    <p className="font-medium">Head Office</p>
-                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Union Trade Centre, 1 KN 4 Ave, Kigali, Rwanda</p>
+                    <p className={'text-xs font-semibold mb-0.5 ' + (dm ? 'text-slate-400' : 'text-slate-500')}>{item.label}</p>
+                    <p className={'text-sm font-medium ' + (dm ? 'text-slate-200' : 'text-slate-800')}>{item.val}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Phone className="text-orange-500" size={20} />
-                  <div>
-                    <p className="font-medium">Phone</p>
-                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>+250 788 000 000</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="text-orange-500" size={20} />
-                  <div>
-                    <p className="font-medium">Email</p>
-                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>info@simbasupermarket.rw</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Clock className="text-orange-500" size={20} />
-                  <div>
-                    <p className="font-medium">Opening Hours</p>
-                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Monday – Sunday: 8:00 AM – 9:00 PM</p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* All locations */}
-        <h2 className="text-2xl font-bold mb-6">{t.ourLocations}</h2>
+        <h2 className={'text-2xl font-black mb-6 ' + (dm ? 'text-white' : 'text-slate-900')}>{t.ourLocations}</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {locations.map((loc, i) => (
-            <div key={i} className={`p-5 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-              <h3 className="font-semibold mb-2 text-orange-500">{loc.name}</h3>
-              <div className="flex items-start gap-2 mb-2">
-                <MapPin size={14} className={`flex-shrink-0 mt-0.5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
-                <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{loc.address}</p>
+          {locs.map((loc,i) => (
+            <div key={i} className={'rounded-2xl border p-5 ' + card}>
+              <h3 className={'font-semibold text-sm mb-2 text-orange-500'}>{loc.name}</h3>
+              <div className="flex items-start gap-2 mb-1.5">
+                <MapPin size={13} className={'flex-shrink-0 mt-0.5 ' + (dm ? 'text-slate-500' : 'text-slate-400')} />
+                <p className={'text-xs ' + (dm ? 'text-slate-400' : 'text-slate-600')}>{loc.address}</p>
               </div>
               <div className="flex items-center gap-2">
-                <Phone size={14} className={darkMode ? 'text-gray-400' : 'text-gray-500'} />
-                <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{loc.phone}</p>
+                <Phone size={13} className={dm ? 'text-slate-500' : 'text-slate-400'} />
+                <p className={'text-xs ' + (dm ? 'text-slate-400' : 'text-slate-600')}>{loc.phone}</p>
               </div>
             </div>
           ))}

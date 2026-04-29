@@ -1,11 +1,17 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { LayoutDashboard, ShoppingBag, Package, TrendingUp, AlertCircle, ArrowLeft, Trash2, Edit3, Check, X, Users, Lock, Eye, EyeOff, LogOut, Bell, Settings } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Package, TrendingUp, AlertCircle, ArrowLeft, Trash2, Edit3, Check, X, Users, Lock, Eye, EyeOff, LogOut, Bell, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
 import { useApp } from "../context/AppContext";
 import productsData from "../simba_products.json";
 
-const AISLE_IMG = "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&q=85";
+const DASHBOARD_PHOTOS = [
+  { img: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1400&q=85", label: "Supermarket Aisle" },
+  { img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1400&q=85", label: "Fresh Produce" },
+  { img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85", label: "Kitchen & Electronics" },
+  { img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1400&q=85", label: "Sports & Wellness" },
+  { img: "https://images.unsplash.com/photo-1510812431401-41a2bd2722f3?w=1400&q=85", label: "Beverages" },
+];
 
 const SALES = [
   { day: "Mon", revenue: 245000, orders: 18 },
@@ -115,7 +121,23 @@ export default function Admin() {
   const [editId, setEditId] = useState(null);
   const [editPrice, setEditPrice] = useState("");
   const [adminPw, setAdminPw] = useState(() => { const u = JSON.parse(localStorage.getItem("users")||"[]").find(x=>x.email==="admin@simba.rw"); return u?.password||""; });
+  const [dbSlide, setDbSlide] = useState(0);
+  const [dbFade, setDbFade] = useState(true);
   const dm = darkMode;
+
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setDbFade(false);
+      setTimeout(() => { setDbSlide(i => (i+1)%DASHBOARD_PHOTOS.length); setDbFade(true); }, 500);
+    }, 4000);
+    return () => clearInterval(iv);
+  }, []);
+
+  const goDb = (dir) => {
+    setDbFade(false);
+    setTimeout(() => { setDbSlide(i => (i+dir+DASHBOARD_PHOTOS.length)%DASHBOARD_PHOTOS.length); setDbFade(true); }, 500);
+  };
+  const photo = DASHBOARD_PHOTOS[dbSlide];
   const totalRevenue = SALES.reduce((s,d)=>s+d.revenue,0);
   const lowStock = products.filter(p=>!p.inStock).length;
   const card = dm ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100 shadow-sm";
@@ -231,18 +253,33 @@ export default function Admin() {
                 <p className={'text-sm mt-1 ' + (darkMode ? 'text-gray-500' : 'text-gray-500')}>Welcome back, {user.name}. Here is what is happening today.</p>
               </div>
 
-              {/* Hero aisle banner */}
-              <div className='relative rounded-2xl overflow-hidden h-48 md:h-64'>
-                <img src='https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1400&q=85'
-                  alt='Simba Supermarket Aisle' className='w-full h-full object-cover' />
-                <div className='absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent' />
-                <div className='absolute inset-0 flex flex-col justify-center px-8'>
-                  <p className='text-orange-400 text-xs font-bold uppercase tracking-widest mb-2'>Simba Supermarket</p>
-                  <h2 className='text-white text-2xl md:text-3xl font-black leading-tight mb-1'>Rwanda&apos;s Largest<br/>Supermarket Chain</h2>
-                  <p className='text-white/70 text-sm'>11 branches across Kigali &bull; 789 products &bull; Est. 2007</p>
-                </div>
-                <div className='absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full'>Live Dashboard</div>
-              </div>
+               {/* Photo Slideshow Banner */}
+               <div className='relative rounded-2xl overflow-hidden h-48 md:h-64'>
+                 <div className={`absolute inset-0 transition-opacity duration-500 ${dbFade ? 'opacity-100' : 'opacity-0'}`}>
+                   <img src={photo.img} alt={photo.label} className='w-full h-full object-cover' />
+                   <div className='absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent' />
+                 </div>
+                 <div className='absolute inset-0 flex flex-col justify-center px-8'>
+                   <p className='text-orange-400 text-xs font-bold uppercase tracking-widest mb-2'>Simba Supermarket</p>
+                   <h2 className={`text-white text-2xl md:text-3xl font-black leading-tight mb-1 transition-all duration-500 ${dbFade ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>Rwanda&apos;s Largest<br/>Supermarket Chain</h2>
+                   <p className={`text-white/70 text-sm transition-all duration-500 delay-75 ${dbFade ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>11 branches across Kigali &bull; {productsData.products.length} products &bull; Est. 2007</p>
+                 </div>
+                 <div className='absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1'>
+                   <span className='w-1.5 h-1.5 bg-white rounded-full animate-pulse' /> Live Dashboard
+                 </div>
+                 <button onClick={() => goDb(-1)} className='absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all'>
+                   <ChevronLeft size={16} />
+                 </button>
+                 <button onClick={() => goDb(1)} className='absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all'>
+                   <ChevronRight size={16} />
+                 </button>
+                 <div className='absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5'>
+                   {DASHBOARD_PHOTOS.map((p,i) => (
+                     <button key={i} onClick={() => { setDbFade(false); setTimeout(() => { setDbSlide(i); setDbFade(true); }, 500); }}
+                       className={`h-1 rounded-full transition-all duration-300 ${i===dbSlide ? 'w-6 bg-white' : 'w-1 bg-white/40 hover:bg-white/60'}`} />
+                   ))}
+                 </div>
+               </div>
 
               {/* Stats grid */}
               <div className='grid grid-cols-2 xl:grid-cols-4 gap-4'>
