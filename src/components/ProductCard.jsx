@@ -5,7 +5,7 @@ import { useApp } from "../context/AppContext";
 
 export function ProductCardSkeleton() {
   return (
-    <div className="rounded-2xl overflow-hidden bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+    <div className="rounded-2xl overflow-hidden bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700">
       <div className="aspect-square skeleton" />
       <div className="p-3 space-y-2">
         <div className="h-2.5 skeleton rounded w-2/5" />
@@ -36,8 +36,8 @@ export default function ProductCard({ product }) {
 
   return (
     <Link to={`/product/${product.id}`}
-      className={`group rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${dm ? "bg-slate-800 border border-slate-700 hover:border-orange-500/40 hover:shadow-slate-900" : "bg-white border border-slate-100 hover:border-orange-200 hover:shadow-orange-50/80"}`}>
-      <div className="relative aspect-square overflow-hidden bg-slate-50 dark:bg-slate-700">
+      className={`group rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${dm ? "bg-zinc-800 border border-zinc-700 hover:border-orange-500/40 hover:shadow-slate-900" : "bg-white border border-slate-100 hover:border-orange-200 hover:shadow-orange-50/80"}`}>
+      <div className="relative aspect-square overflow-hidden bg-slate-50 dark:bg-zinc-700">
         {!imgErr
           ? <img src={product.image} alt={product.name} onError={() => setImgErr(true)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
           : <div className="w-full h-full flex items-center justify-center text-4xl">🛒</div>
@@ -49,15 +49,15 @@ export default function ProductCard({ product }) {
         )}
       </div>
       <div className="p-3 flex flex-col flex-1">
-        <p className={`text-[10px] font-semibold uppercase tracking-wider mb-1 ${dm ? "text-slate-500" : "text-slate-400"}`}>{product.category}</p>
+        <p className={`text-[10px] font-semibold uppercase tracking-wider mb-1 ${dm ? "text-zinc-500" : "text-zinc-400"}`}>{product.category}</p>
         <h3 className={`text-xs font-semibold line-clamp-2 leading-snug flex-1 mb-2.5 ${dm ? "text-slate-100" : "text-slate-800"}`}>{product.name}</h3>
         <div className="flex items-center justify-between gap-1">
           <div className="leading-none">
             <span className={`font-bold text-sm ${dm ? "text-orange-400" : "text-orange-500"}`}>{product.price.toLocaleString()}</span>
-            <span className={`text-[10px] ml-0.5 ${dm ? "text-slate-500" : "text-slate-400"}`}>RWF</span>
+            <span className={`text-[10px] ml-0.5 ${dm ? "text-zinc-500" : "text-zinc-400"}`}>RWF</span>
           </div>
           <button onClick={handleAdd} disabled={!product.inStock}
-            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold transition-all ${added ? "bg-emerald-500 text-white" : product.inStock ? "bg-orange-500 hover:bg-orange-600 text-white shadow-sm shadow-orange-200" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}>
+            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-semibold transition-all ${added ? "bg-emerald-500 text-white" : product.inStock ? "bg-orange-500 hover:bg-orange-600 text-white shadow-sm shadow-orange-200" : "bg-slate-100 text-zinc-400 cursor-not-allowed"}`}>
             {added ? <><Check size={11} />{t.addedToCart}</> : <><ShoppingCart size={11} />{t.addToCart}</>}
           </button>
         </div>

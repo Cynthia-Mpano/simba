@@ -1,0 +1,5 @@
+﻿a = open('simba-supermarket/src/pages/Admin.jsx', encoding='utf-8').read()
+a = a.replace("Rwanda\u0027s Largest", 'Sales')
+a = a.replace('Supermarket Chain', 'Overview')
+open('simba-supermarket/src/pages/Admin.jsx', 'w', encoding='utf-8').write(a)
+print('done', len(a.splitlines()))

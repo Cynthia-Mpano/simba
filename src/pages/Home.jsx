@@ -1,6 +1,6 @@
 ﻿import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Truck, Shield, Clock, ShoppingBag, ArrowRight, Star, ChevronRight } from 'lucide-react';
+import { Truck, Shield, Clock, ShoppingBag, ArrowRight, ChevronRight } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
 import productsData from '../simba_products.json';
@@ -26,10 +26,10 @@ export default function Home() {
   const all = productsData.products;
   const cats = [...new Set(all.map(p => p.category))];
   const dm = darkMode;
-  const card = dm ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm';
+  const card = dm ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-100 shadow-sm';
 
   return (
-    <div className={dm ? 'bg-slate-950 min-h-screen' : 'bg-slate-50 min-h-screen'}>
+    <div className={dm ? 'bg-zinc-950 min-h-screen' : 'bg-slate-50 min-h-screen'}>
 
       {/* HERO */}
       <section className="relative overflow-hidden min-h-[520px] flex items-center">
@@ -39,11 +39,9 @@ export default function Home() {
         </div>
         <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 py-20">
           <div className="max-w-lg">
-            <span className="inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 text-orange-300 text-xs font-bold px-3 py-1.5 rounded-full mb-5">
-              <Star size={11} fill="currentColor" /> Rwanda's #1 Online Supermarket
-            </span>
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white/80 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 tracking-wide">Simba Supermarket</div>
             <h1 className="text-4xl sm:text-5xl font-black text-white leading-[1.1] mb-4">{t.heroTitle}</h1>
-            <p className="text-slate-300 text-base mb-8 leading-relaxed">{t.heroSub}</p>
+            <p className="text-zinc-300 text-base mb-8 leading-relaxed">{t.heroSub}</p>
             <div className="flex flex-wrap gap-3">
               <Link to="/shop" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-bold transition-all hover:scale-105 shadow-lg shadow-orange-500/25">
                 {t.shopNow} <ArrowRight size={17} />
@@ -66,12 +64,12 @@ export default function Home() {
             { icon: ShoppingBag, title: '11 Branches', desc: 'Across Kigali', c: 'text-orange-500' },
           ].map((f,i) => (
             <div key={i} className={'rounded-2xl border p-4 flex items-center gap-3 ' + card}>
-              <div className={'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ' + (dm ? 'bg-slate-800' : 'bg-slate-50')}>
+              <div className={'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ' + (dm ? 'bg-zinc-800' : 'bg-slate-50')}>
                 <f.icon className={f.c} size={19} />
               </div>
               <div>
                 <p className={'font-semibold text-sm ' + (dm ? 'text-slate-100' : 'text-slate-800')}>{f.title}</p>
-                <p className={'text-xs ' + (dm ? 'text-slate-500' : 'text-slate-500')}>{f.desc}</p>
+                <p className={'text-xs ' + (dm ? 'text-zinc-500' : 'text-zinc-500')}>{f.desc}</p>
               </div>
             </div>
           ))}
@@ -103,7 +101,7 @@ export default function Home() {
         <div className="flex items-center justify-between mb-5">
           <div>
             <h2 className={'text-xl font-black ' + (dm ? 'text-white' : 'text-slate-900')}>{t.featuredProducts}</h2>
-            <p className={'text-xs mt-0.5 ' + (dm ? 'text-slate-500' : 'text-slate-500')}>{t.showing} {Math.min(visible,all.length)} {t.of} {all.length} {t.products}</p>
+            <p className={'text-xs mt-0.5 ' + (dm ? 'text-zinc-500' : 'text-zinc-500')}>{t.showing} {Math.min(visible,all.length)} {t.of} {all.length} {t.products}</p>
           </div>
           <Link to="/shop" className="flex items-center gap-1 text-orange-500 text-sm font-semibold hover:text-orange-600">{t.viewAll} <ChevronRight size={15} /></Link>
         </div>
@@ -116,7 +114,7 @@ export default function Home() {
               className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-8 py-3.5 rounded-2xl font-bold transition-all hover:scale-105 shadow-lg shadow-orange-200">
               {t.seeMore} <ArrowRight size={17} />
             </button>
-            <p className={'text-xs mt-2 ' + (dm ? 'text-slate-600' : 'text-slate-400')}>{all.length-visible} more products</p>
+            <p className={'text-xs mt-2 ' + (dm ? 'text-slate-600' : 'text-zinc-400')}>{all.length-visible} more products</p>
           </div>
         )}
       </section>

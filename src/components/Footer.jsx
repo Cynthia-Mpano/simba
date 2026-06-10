@@ -6,12 +6,12 @@ export default function Footer() {
   const { t } = useApp();
   const branches = ["Simba Centenary","Simba Gishushu","Simba Kimironko","Simba Kicukiro","Simba Kigali Heights","Simba UTC","Simba Gacuriro","Simba Gikondo","Simba Sonatube","Simba Kisimenti","Simba Rebero"];
   return (
-    <footer className="bg-slate-950 text-slate-400 mt-20">
+    <footer className="bg-zinc-950 text-zinc-400 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
           <div className="flex items-center gap-2.5 mb-4">
-            <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center text-white font-black text-xl">S</div>
-            <div><div className="font-black text-white text-sm tracking-tight">SIMBA</div><div className="text-[10px] text-slate-500 tracking-widest uppercase">Supermarket</div></div>
+            <div className="w-9 h-9 flex-shrink-0"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-sm"><rect width="36" height="36" rx="9" fill="#f97316"/><path d="M22.5 10.5H15a2.5 2.5 0 000 5h6a2.5 2.5 0 010 5H13.5" stroke="white" strokeWidth="2.2" strokeLinecap="round"/></svg></div>
+            <div><div className="font-black text-white text-sm tracking-tight">SIMBA</div><div className="text-[10px] text-zinc-500 tracking-widest uppercase">Supermarket</div></div>
           </div>
           <p className="text-sm leading-relaxed mb-5">Rwanda's largest supermarket chain. Quality products at affordable prices since 2007.</p>
           <div className="flex items-center gap-2 text-xs"><Clock size={13} className="text-orange-400 flex-shrink-0" /><span>Open daily: 8:00 AM – 9:00 PM</span></div>
@@ -41,12 +41,12 @@ export default function Footer() {
           </ul>
           <div className="flex gap-2 mt-5">
             {["f","in","𝕏"].map((s,i) => (
-              <a key={i} href="#" className="w-8 h-8 bg-slate-800 hover:bg-orange-500 rounded-lg flex items-center justify-center text-xs transition-colors">{s}</a>
+              <a key={i} href="#" className="w-8 h-8 bg-zinc-800 hover:bg-orange-500 rounded-lg flex items-center justify-center text-xs transition-colors">{s}</a>
             ))}
           </div>
         </div>
       </div>
-      <div className="border-t border-slate-900 py-4 text-center text-xs text-slate-600">
+      <div className="border-t border-zinc-900 py-4 text-center text-xs text-slate-600">
         © {new Date().getFullYear()} Simba Supermarket Ltd. All rights reserved. | Kigali, Rwanda
       </div>
     </footer>

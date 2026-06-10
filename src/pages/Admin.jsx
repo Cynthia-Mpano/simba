@@ -179,7 +179,7 @@ export default function Admin() {
         {/* Logo */}
         <div className={`px-6 py-5 border-b ${dm ? "border-gray-800" : "border-gray-100"}`}>
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center text-white font-black text-xl">S</div>
+            <div className="w-9 h-9 flex-shrink-0"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-sm"><rect width="36" height="36" rx="9" fill="#f97316"/><path d="M22.5 10.5H15a2.5 2.5 0 000 5h6a2.5 2.5 0 010 5H13.5" stroke="white" strokeWidth="2.2" strokeLinecap="round"/></svg></div>
             <div>
               <p className="font-black text-sm text-orange-500 leading-none">SIMBA</p>
               <p className={`text-[10px] tracking-widest uppercase ${sub}`}>Admin Panel</p>
@@ -263,7 +263,7 @@ export default function Admin() {
                  </div>
                  <div className='absolute inset-0 flex flex-col justify-center px-8'>
                    <p className='text-orange-400 text-xs font-bold uppercase tracking-widest mb-2'>Simba Supermarket</p>
-                   <h2 className={`text-white text-2xl md:text-3xl font-black leading-tight mb-1 transition-all duration-500 ${dbFade ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>Rwanda&apos;s Largest<br/>Supermarket Chain</h2>
+                   <h2 className={`text-white text-2xl md:text-3xl font-black leading-tight mb-1 transition-all duration-500 ${dbFade ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>Rwanda&apos;s Largest<br/>Overview</h2>
                    <p className={`text-white/70 text-sm transition-all duration-500 delay-75 ${dbFade ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>11 branches across Kigali &bull; {productsData.products.length} products &bull; Est. 2007</p>
                  </div>
                  <div className='absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1'>

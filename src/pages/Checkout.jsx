@@ -47,9 +47,9 @@ export default function Checkout() {
   const dm = darkMode;
   const delivery = cartTotal >= 50000 ? 0 : 2000;
   const total = cartTotal + delivery;
-  const card = dm ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm';
+  const card = dm ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-100 shadow-sm';
   const inp  = 'w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 ' +
-               (dm ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-slate-50 border-slate-200 text-slate-900');
+               (dm ? 'bg-zinc-800 border-zinc-700 text-white placeholder-zinc-500' : 'bg-slate-50 border-slate-200 text-slate-900');
 
   const STEP_LABELS = {
     step1: t.paymentStep1 + ' +250' + phone.replace(/\s/g,'').slice(-9) + '...',
@@ -116,9 +116,9 @@ export default function Checkout() {
   };
 
   if (cart.length === 0 && step < 3) return (
-    <div className={'min-h-screen flex items-center justify-center ' + (dm ? 'bg-slate-950 text-white' : 'bg-slate-50')}>
+    <div className={'min-h-screen flex items-center justify-center ' + (dm ? 'bg-zinc-950 text-white' : 'bg-slate-50')}>
       <div className="text-center p-8">
-        <ShoppingBag className="mx-auto mb-4 text-slate-300" size={56} />
+        <ShoppingBag className="mx-auto mb-4 text-zinc-300" size={56} />
         <h2 className={'text-xl font-bold mb-4 ' + (dm ? 'text-white' : 'text-slate-800')}>{t.emptyCart}</h2>
         <Link to="/shop" className="bg-orange-500 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-orange-600">{t.shop}</Link>
       </div>
@@ -126,7 +126,7 @@ export default function Checkout() {
   );
 
   return (
-    <div className={'min-h-screen ' + (dm ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900')}>
+    <div className={'min-h-screen ' + (dm ? 'bg-zinc-950 text-white' : 'bg-slate-50 text-slate-900')}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
 
         {/* ── Step indicator ── */}
@@ -140,11 +140,11 @@ export default function Checkout() {
               ].map((s, i) => (
                 <div key={s.n} className="flex items-center gap-2">
                   <div className={'w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ' +
-                    (step >= s.n ? 'bg-orange-500 text-white' : dm ? 'bg-slate-800 text-slate-500' : 'bg-slate-200 text-slate-500')}>
+                    (step >= s.n ? 'bg-orange-500 text-white' : dm ? 'bg-zinc-800 text-zinc-500' : 'bg-slate-200 text-zinc-500')}>
                     {step > s.n ? <Check size={14} /> : s.n}
                   </div>
-                  <span className={'text-sm font-medium ' + (step >= s.n ? 'text-orange-500' : dm ? 'text-slate-500' : 'text-slate-400')}>{s.label}</span>
-                  {i < 1 && <div className={'w-12 h-0.5 ' + (dm ? 'bg-slate-800' : 'bg-slate-200')} />}
+                  <span className={'text-sm font-medium ' + (step >= s.n ? 'text-orange-500' : dm ? 'text-zinc-500' : 'text-zinc-400')}>{s.label}</span>
+                  {i < 1 && <div className={'w-12 h-0.5 ' + (dm ? 'bg-zinc-800' : 'bg-slate-200')} />}
                 </div>
               ))}
             </div>
@@ -158,8 +158,8 @@ export default function Checkout() {
               <Loader className="text-orange-500 animate-spin" size={36} />
             </div>
             <h2 className={'text-xl font-black mb-2 ' + (dm ? 'text-white' : 'text-slate-900')}>{t.paymentPending}</h2>
-            <p className={'text-sm mb-6 ' + (dm ? 'text-slate-400' : 'text-slate-500')}>{t.ussdPrompt}</p>
-            <div className={'rounded-xl p-4 text-left space-y-3 ' + (dm ? 'bg-slate-800' : 'bg-slate-50')}>
+            <p className={'text-sm mb-6 ' + (dm ? 'text-zinc-400' : 'text-zinc-500')}>{t.ussdPrompt}</p>
+            <div className={'rounded-xl p-4 text-left space-y-3 ' + (dm ? 'bg-zinc-800' : 'bg-slate-50')}>
               {['step1','step2','step3','step4'].map((s, i) => {
                 const steps = ['step1','step2','step3','step4'];
                 const currentIdx = steps.indexOf(payStep);
@@ -169,10 +169,10 @@ export default function Checkout() {
                 return (
                   <div key={s} className="flex items-center gap-3">
                     <div className={'w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ' +
-                      (done ? 'bg-emerald-500 text-white' : active ? 'bg-orange-500 text-white' : dm ? 'bg-slate-700 text-slate-500' : 'bg-slate-200 text-slate-400')}>
+                      (done ? 'bg-emerald-500 text-white' : active ? 'bg-orange-500 text-white' : dm ? 'bg-zinc-700 text-zinc-500' : 'bg-slate-200 text-zinc-400')}>
                       {done ? <Check size={12} /> : active ? <Loader size={12} className="animate-spin" /> : i+1}
                     </div>
-                    <span className={'text-xs ' + (done ? 'text-emerald-500 font-medium' : active ? (dm?'text-white':'text-slate-800') + ' font-medium' : dm ? 'text-slate-500' : 'text-slate-400')}>
+                    <span className={'text-xs ' + (done ? 'text-emerald-500 font-medium' : active ? (dm?'text-white':'text-slate-800') + ' font-medium' : dm ? 'text-zinc-500' : 'text-zinc-400')}>
                       {STEP_LABELS[s]}
                     </span>
                   </div>
@@ -193,8 +193,8 @@ export default function Checkout() {
                     <CheckCircle className="text-emerald-500" size={40} />
                   </div>
                   <h2 className={'text-2xl font-black mb-1 ' + (dm ? 'text-white' : 'text-slate-900')}>{t.thankYou}</h2>
-                  <p className={'text-sm mb-1 ' + (dm ? 'text-slate-400' : 'text-slate-500')}>{t.orderSuccess}</p>
-                  <p className={'text-sm ' + (dm ? 'text-slate-400' : 'text-slate-500')}>{t.deliveryTime}</p>
+                  <p className={'text-sm mb-1 ' + (dm ? 'text-zinc-400' : 'text-zinc-500')}>{t.orderSuccess}</p>
+                  <p className={'text-sm ' + (dm ? 'text-zinc-400' : 'text-zinc-500')}>{t.deliveryTime}</p>
                 </>
               ) : (
                 <>
@@ -202,7 +202,7 @@ export default function Checkout() {
                     <XCircle className="text-red-500" size={40} />
                   </div>
                   <h2 className={'text-2xl font-black mb-1 text-red-500'}>{t.paymentFailed}</h2>
-                  <p className={'text-sm mb-4 ' + (dm ? 'text-slate-400' : 'text-slate-500')}>Your order was not placed. Please try again.</p>
+                  <p className={'text-sm mb-4 ' + (dm ? 'text-zinc-400' : 'text-zinc-500')}>Your order was not placed. Please try again.</p>
                   <button onClick={() => { setStep(2); setPayResult(null); setBusy(false); }}
                     className="bg-orange-500 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-orange-600">
                     Try Again
@@ -225,26 +225,26 @@ export default function Checkout() {
                       { label: t.paymentMethod,  value: orderData.paymentMethod, highlight: false },
                       { label: t.orderDate,      value: orderData.date,          highlight: false },
                     ].map((row, i) => (
-                      <div key={i} className={'p-3 rounded-xl ' + (dm ? 'bg-slate-800' : 'bg-slate-50')}>
-                        <p className={'text-xs font-semibold mb-0.5 ' + (dm ? 'text-slate-500' : 'text-slate-400')}>{row.label}</p>
-                        <p className={'text-sm font-bold ' + (row.highlight ? 'text-orange-500' : dm ? 'text-slate-200' : 'text-slate-800')}>{row.value}</p>
+                      <div key={i} className={'p-3 rounded-xl ' + (dm ? 'bg-zinc-800' : 'bg-slate-50')}>
+                        <p className={'text-xs font-semibold mb-0.5 ' + (dm ? 'text-zinc-500' : 'text-zinc-400')}>{row.label}</p>
+                        <p className={'text-sm font-bold ' + (row.highlight ? 'text-orange-500' : dm ? 'text-zinc-200' : 'text-slate-800')}>{row.value}</p>
                       </div>
                     ))}
                   </div>
 
                   {/* Items ordered */}
-                  <h4 className={'font-semibold text-sm mb-3 ' + (dm ? 'text-slate-300' : 'text-slate-700')}>{t.orderItems}</h4>
-                  <div className={'rounded-xl overflow-hidden border ' + (dm ? 'border-slate-700' : 'border-slate-100')}>
+                  <h4 className={'font-semibold text-sm mb-3 ' + (dm ? 'text-zinc-300' : 'text-slate-700')}>{t.orderItems}</h4>
+                  <div className={'rounded-xl overflow-hidden border ' + (dm ? 'border-zinc-700' : 'border-slate-100')}>
                     {orderData.items.map((item, i) => (
                       <div key={i} className={'flex justify-between items-center px-4 py-3 text-sm ' +
-                        (i > 0 ? 'border-t ' + (dm ? 'border-slate-700' : 'border-slate-100') : '') +
-                        (dm ? ' bg-slate-800/50' : ' bg-white')}>
-                        <span className={dm ? 'text-slate-300' : 'text-slate-700'}>{item.name} <span className="text-slate-400">x{item.qty}</span></span>
-                        <span className={'font-semibold ' + (dm ? 'text-slate-200' : 'text-slate-800')}>{(item.price * item.qty).toLocaleString()} RWF</span>
+                        (i > 0 ? 'border-t ' + (dm ? 'border-zinc-700' : 'border-slate-100') : '') +
+                        (dm ? ' bg-zinc-800/50' : ' bg-white')}>
+                        <span className={dm ? 'text-zinc-300' : 'text-slate-700'}>{item.name} <span className="text-zinc-400">x{item.qty}</span></span>
+                        <span className={'font-semibold ' + (dm ? 'text-zinc-200' : 'text-slate-800')}>{(item.price * item.qty).toLocaleString()} RWF</span>
                       </div>
                     ))}
                     <div className={'flex justify-between items-center px-4 py-3 border-t font-black ' +
-                      (dm ? 'border-slate-700 bg-slate-800' : 'border-slate-100 bg-slate-50')}>
+                      (dm ? 'border-zinc-700 bg-zinc-800' : 'border-slate-100 bg-slate-50')}>
                       <span className={dm ? 'text-white' : 'text-slate-900'}>{t.total}</span>
                       <span className="text-orange-500">{orderData.amount.toLocaleString()} RWF</span>
                     </div>
@@ -255,9 +255,9 @@ export default function Checkout() {
                 <div className={'rounded-2xl border p-6 ' + card}>
                   <h3 className={'font-bold text-base mb-3 ' + (dm ? 'text-white' : 'text-slate-900')}>{t.deliveryInfo}</h3>
                   <div className="grid sm:grid-cols-2 gap-3 text-sm">
-                    <div><span className={dm ? 'text-slate-500' : 'text-slate-400'}>Name: </span><span className={dm ? 'text-slate-200' : 'text-slate-800'}>{orderData.customer}</span></div>
-                    <div><span className={dm ? 'text-slate-500' : 'text-slate-400'}>Phone: </span><span className={dm ? 'text-slate-200' : 'text-slate-800'}>{orderData.phone}</span></div>
-                    <div className="sm:col-span-2"><span className={dm ? 'text-slate-500' : 'text-slate-400'}>Address: </span><span className={dm ? 'text-slate-200' : 'text-slate-800'}>{orderData.address}</span></div>
+                    <div><span className={dm ? 'text-zinc-500' : 'text-zinc-400'}>Name: </span><span className={dm ? 'text-zinc-200' : 'text-slate-800'}>{orderData.customer}</span></div>
+                    <div><span className={dm ? 'text-zinc-500' : 'text-zinc-400'}>Phone: </span><span className={dm ? 'text-zinc-200' : 'text-slate-800'}>{orderData.phone}</span></div>
+                    <div className="sm:col-span-2"><span className={dm ? 'text-zinc-500' : 'text-zinc-400'}>Address: </span><span className={dm ? 'text-zinc-200' : 'text-slate-800'}>{orderData.address}</span></div>
                   </div>
                 </div>
 
@@ -267,7 +267,7 @@ export default function Checkout() {
                     {t.continueShopping} <ArrowRight size={17} />
                   </Link>
                   <Link to="/" className={'flex-1 flex items-center justify-center py-3 rounded-xl font-semibold border transition-colors ' +
-                    (dm ? 'border-slate-700 text-slate-300 hover:bg-slate-800' : 'border-slate-200 text-slate-700 hover:bg-slate-50')}>
+                    (dm ? 'border-zinc-700 text-zinc-300 hover:bg-zinc-800' : 'border-slate-200 text-slate-700 hover:bg-slate-50')}>
                     {t.backToHome}
                   </Link>
                 </div>
@@ -291,20 +291,20 @@ export default function Checkout() {
                     <div className="grid sm:grid-cols-2 gap-4">
                       {[['firstName',t.firstName,'text'],['lastName',t.lastName,'text'],['email',t.email,'email'],['phone',t.phone,'tel']].map(([k,l,tp]) => (
                         <div key={k}>
-                          <label className={'block text-xs font-semibold mb-1.5 ' + (dm ? 'text-slate-400' : 'text-slate-600')}>{l}</label>
+                          <label className={'block text-xs font-semibold mb-1.5 ' + (dm ? 'text-zinc-400' : 'text-slate-600')}>{l}</label>
                           <input type={tp} required value={form[k]} onChange={e => setForm(f=>({...f,[k]:e.target.value}))} className={inp} />
                         </div>
                       ))}
                       <div className="sm:col-span-2">
-                        <label className={'block text-xs font-semibold mb-1.5 ' + (dm ? 'text-slate-400' : 'text-slate-600')}>{t.address}</label>
+                        <label className={'block text-xs font-semibold mb-1.5 ' + (dm ? 'text-zinc-400' : 'text-slate-600')}>{t.address}</label>
                         <input type="text" required value={form.address} onChange={e => setForm(f=>({...f,address:e.target.value}))} className={inp} />
                       </div>
                       <div>
-                        <label className={'block text-xs font-semibold mb-1.5 ' + (dm ? 'text-slate-400' : 'text-slate-600')}>{t.city}</label>
+                        <label className={'block text-xs font-semibold mb-1.5 ' + (dm ? 'text-zinc-400' : 'text-slate-600')}>{t.city}</label>
                         <input type="text" value={form.city} onChange={e => setForm(f=>({...f,city:e.target.value}))} className={inp} />
                       </div>
                       <div>
-                        <label className={'block text-xs font-semibold mb-1.5 ' + (dm ? 'text-slate-400' : 'text-slate-600')}>{t.notes} <span className="text-slate-400">({t.optional})</span></label>
+                        <label className={'block text-xs font-semibold mb-1.5 ' + (dm ? 'text-zinc-400' : 'text-slate-600')}>{t.notes} <span className="text-zinc-400">({t.optional})</span></label>
                         <input type="text" value={form.notes} onChange={e => setForm(f=>({...f,notes:e.target.value}))} className={inp} />
                       </div>
                     </div>
@@ -324,12 +324,12 @@ export default function Checkout() {
                         { id:'cod',    label:t.cashOnDelivery, icon:'💵', desc:'Pay cash when your order arrives' },
                       ].map(m => (
                         <label key={m.id} className={'flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ' +
-                          (pay===m.id ? 'border-orange-500 ' + (dm ? 'bg-orange-950/30' : 'bg-orange-50') : dm ? 'border-slate-700 bg-slate-800' : 'border-slate-200 bg-slate-50')}>
+                          (pay===m.id ? 'border-orange-500 ' + (dm ? 'bg-orange-950/30' : 'bg-orange-50') : dm ? 'border-zinc-700 bg-zinc-800' : 'border-slate-200 bg-slate-50')}>
                           <input type="radio" name="pay" value={m.id} checked={pay===m.id} onChange={() => setPay(m.id)} className="hidden" />
                           <span className="text-2xl">{m.icon}</span>
                           <div className="flex-1">
                             <div className={'font-semibold text-sm ' + (dm ? 'text-slate-100' : 'text-slate-800')}>{m.label}</div>
-                            <div className={'text-xs mt-0.5 ' + (dm ? 'text-slate-500' : 'text-slate-500')}>{m.desc}</div>
+                            <div className={'text-xs mt-0.5 ' + (dm ? 'text-zinc-500' : 'text-zinc-500')}>{m.desc}</div>
                           </div>
                           {pay===m.id && <Check size={17} className="text-orange-500 flex-shrink-0" />}
                         </label>
@@ -337,24 +337,24 @@ export default function Checkout() {
                     </div>
 
                     {(pay==='momo'||pay==='airtel') && (
-                      <div className={'p-5 rounded-xl border ' + (dm ? 'bg-slate-800 border-slate-700' : 'bg-orange-50 border-orange-100')}>
+                      <div className={'p-5 rounded-xl border ' + (dm ? 'bg-zinc-800 border-zinc-700' : 'bg-orange-50 border-orange-100')}>
                         <p className={'text-xs font-bold uppercase tracking-wide mb-3 ' + (dm ? 'text-orange-400' : 'text-orange-600')}>
                           {pay==='momo' ? '📱 MTN Mobile Money' : '📲 Airtel Money'} — {t.enterUssd}
                         </p>
-                        <label className={'block text-xs font-semibold mb-2 ' + (dm ? 'text-slate-400' : 'text-slate-600')}>
+                        <label className={'block text-xs font-semibold mb-2 ' + (dm ? 'text-zinc-400' : 'text-slate-600')}>
                           <Phone size={13} className="inline mr-1" />
                           {pay==='momo' ? t.enterPhone : t.enterAirtel}
                         </label>
                         <div className="flex">
                           <span className={'px-3 py-2.5 rounded-l-xl border text-sm font-semibold ' +
-                            (dm ? 'bg-slate-700 border-slate-600 text-slate-300' : 'bg-white border-slate-200 text-slate-600')}>+250</span>
+                            (dm ? 'bg-zinc-700 border-slate-600 text-zinc-300' : 'bg-white border-slate-200 text-slate-600')}>+250</span>
                           <input type="tel" required value={phone} onChange={e => setPhone(e.target.value)}
                             placeholder={pay==='momo' ? '078 000 0000' : '073 000 0000'}
                             pattern="[0-9 ]{9,12}"
                             className={'flex-1 px-4 py-2.5 rounded-r-xl border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 ' +
-                              (dm ? 'bg-slate-800 border-slate-600 text-white' : 'bg-white border-slate-200')} />
+                              (dm ? 'bg-zinc-800 border-slate-600 text-white' : 'bg-white border-slate-200')} />
                         </div>
-                        <p className={'text-xs mt-2.5 leading-relaxed ' + (dm ? 'text-slate-400' : 'text-slate-500')}>
+                        <p className={'text-xs mt-2.5 leading-relaxed ' + (dm ? 'text-zinc-400' : 'text-zinc-500')}>
                           {t.paymentInitiated.replace('...', '')} — you will receive a USSD prompt on <strong>+250{phone.replace(/\s/g,'')}</strong> to confirm <strong>{total.toLocaleString()} RWF</strong>.
                         </p>
                       </div>
@@ -369,23 +369,23 @@ export default function Checkout() {
                 <div className="space-y-2 mb-4 max-h-44 overflow-y-auto">
                   {cart.map(item => (
                     <div key={item.id} className="flex justify-between text-xs gap-2">
-                      <span className={'line-clamp-1 flex-1 ' + (dm ? 'text-slate-400' : 'text-slate-600')}>{item.name} x{item.qty}</span>
-                      <span className={'flex-shrink-0 font-medium ' + (dm ? 'text-slate-300' : 'text-slate-700')}>{(item.price*item.qty).toLocaleString()}</span>
+                      <span className={'line-clamp-1 flex-1 ' + (dm ? 'text-zinc-400' : 'text-slate-600')}>{item.name} x{item.qty}</span>
+                      <span className={'flex-shrink-0 font-medium ' + (dm ? 'text-zinc-300' : 'text-slate-700')}>{(item.price*item.qty).toLocaleString()}</span>
                     </div>
                   ))}
                 </div>
-                <div className={'border-t pt-3 space-y-2 ' + (dm ? 'border-slate-800' : 'border-slate-100')}>
+                <div className={'border-t pt-3 space-y-2 ' + (dm ? 'border-zinc-800' : 'border-slate-100')}>
                   <div className="flex justify-between text-sm">
-                    <span className={dm?'text-slate-400':'text-slate-600'}>{t.subtotal}</span>
-                    <span className={dm?'text-slate-200':'text-slate-800'}>{cartTotal.toLocaleString()} RWF</span>
+                    <span className={dm?'text-zinc-400':'text-slate-600'}>{t.subtotal}</span>
+                    <span className={dm?'text-zinc-200':'text-slate-800'}>{cartTotal.toLocaleString()} RWF</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className={dm?'text-slate-400':'text-slate-600'}>{t.delivery}</span>
-                    <span className={delivery===0 ? 'text-emerald-500 font-semibold' : dm?'text-slate-200':'text-slate-800'}>
+                    <span className={dm?'text-zinc-400':'text-slate-600'}>{t.delivery}</span>
+                    <span className={delivery===0 ? 'text-emerald-500 font-semibold' : dm?'text-zinc-200':'text-slate-800'}>
                       {delivery===0 ? t.free : delivery.toLocaleString()+' RWF'}
                     </span>
                   </div>
-                  <div className={'flex justify-between font-black text-base pt-2 border-t ' + (dm ? 'border-slate-800' : 'border-slate-100')}>
+                  <div className={'flex justify-between font-black text-base pt-2 border-t ' + (dm ? 'border-zinc-800' : 'border-slate-100')}>
                     <span className={dm?'text-white':'text-slate-900'}>{t.total}</span>
                     <span className="text-orange-500">{total.toLocaleString()} RWF</span>
                   </div>
@@ -401,7 +401,7 @@ export default function Checkout() {
                 </button>
                 {step===2 && (
                   <button type="button" onClick={() => setStep(1)}
-                    className={'w-full mt-2 py-2 text-sm hover:text-orange-500 transition-colors ' + (dm?'text-slate-500':'text-slate-400')}>
+                    className={'w-full mt-2 py-2 text-sm hover:text-orange-500 transition-colors ' + (dm?'text-zinc-500':'text-zinc-400')}>
                     {t.backToDelivery}
                   </button>
                 )}

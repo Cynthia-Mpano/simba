@@ -44,26 +44,26 @@ export default function Shop() {
   const clear = () => { setSearch(''); setCat(''); setSort(''); setMinP(''); setMaxP(''); setSp({}); setVisible(PAGE); };
   const loadMore = () => { setLoading(true); setTimeout(() => { setVisible(v => v+PAGE); setLoading(false); }, 300); };
 
-  const card = dm ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100 shadow-sm';
-  const inp = 'px-3 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 ' + (dm ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-slate-50 border-slate-200 text-slate-900');
+  const card = dm ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-100 shadow-sm';
+  const inp = 'px-3 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 ' + (dm ? 'bg-zinc-800 border-zinc-700 text-white placeholder-zinc-500' : 'bg-slate-50 border-slate-200 text-slate-900');
 
   return (
-    <div className={dm ? 'min-h-screen bg-slate-950' : 'min-h-screen bg-slate-50'}>
+    <div className={dm ? 'min-h-screen bg-zinc-950' : 'min-h-screen bg-slate-50'}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
         <div className="mb-6">
           <h1 className={'text-2xl font-black ' + (dm ? 'text-white' : 'text-slate-900')}>{t.shop}</h1>
-          <p className={'text-sm mt-1 ' + (dm ? 'text-slate-500' : 'text-slate-500')}>{filtered.length} {t.products}{cat ? ' in '+cat : ''}</p>
+          <p className={'text-sm mt-1 ' + (dm ? 'text-zinc-500' : 'text-zinc-500')}>{filtered.length} {t.products}{cat ? ' in '+cat : ''}</p>
         </div>
 
         {/* Filter bar */}
         <div className={'rounded-2xl border p-4 mb-5 ' + card}>
           <div className="flex flex-wrap gap-2 items-center">
             <form onSubmit={doSearch} className="flex flex-1 min-w-48">
-              <div className={'relative flex items-center flex-1 rounded-xl border focus-within:border-orange-400 transition-colors ' + (dm ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200')}>
-                <Search size={14} className={'absolute left-3 ' + (dm ? 'text-slate-500' : 'text-slate-400')} />
+              <div className={'relative flex items-center flex-1 rounded-xl border focus-within:border-orange-400 transition-colors ' + (dm ? 'bg-zinc-800 border-zinc-700' : 'bg-slate-50 border-slate-200')}>
+                <Search size={14} className={'absolute left-3 ' + (dm ? 'text-zinc-500' : 'text-zinc-400')} />
                 <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t.search}
-                  className={'w-full pl-9 pr-3 py-2.5 bg-transparent text-sm focus:outline-none ' + (dm ? 'text-white placeholder-slate-500' : 'text-slate-900 placeholder-slate-400')} />
+                  className={'w-full pl-9 pr-3 py-2.5 bg-transparent text-sm focus:outline-none ' + (dm ? 'text-white placeholder-zinc-500' : 'text-slate-900 placeholder-zinc-400')} />
               </div>
               <button type="submit" className="ml-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors">{t.filter}</button>
             </form>
@@ -73,14 +73,14 @@ export default function Shop() {
               <option value="priceHigh">{t.priceHigh}</option>
               <option value="name">{t.name}</option>
             </select>
-            <button onClick={() => setShowF(!showF)} className={'flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition-colors ' + (showF ? 'bg-orange-500 text-white border-orange-500' : dm ? 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100')}>
+            <button onClick={() => setShowF(!showF)} className={'flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition-colors ' + (showF ? 'bg-orange-500 text-white border-orange-500' : dm ? 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100')}>
               <SlidersHorizontal size={14} /> Filters {hasF && <span className="w-1.5 h-1.5 bg-orange-400 rounded-full" />}
             </button>
             {hasF && <button onClick={clear} className="flex items-center gap-1 text-sm text-red-500 hover:text-red-600 font-medium"><X size={13} /> {t.clearFilters}</button>}
           </div>
           {showF && (
-            <div className={'mt-4 pt-4 border-t ' + (dm ? 'border-slate-800' : 'border-slate-100')}>
-              <p className={'text-xs font-semibold uppercase tracking-wide mb-2 ' + (dm ? 'text-slate-400' : 'text-slate-500')}>{t.priceRange}</p>
+            <div className={'mt-4 pt-4 border-t ' + (dm ? 'border-zinc-800' : 'border-slate-100')}>
+              <p className={'text-xs font-semibold uppercase tracking-wide mb-2 ' + (dm ? 'text-zinc-400' : 'text-zinc-500')}>{t.priceRange}</p>
               <div className="flex gap-2 max-w-xs">
                 <input type="number" placeholder={t.minPrice} value={minP} onChange={e => setMinP(e.target.value)} className={inp + ' flex-1'} />
                 <input type="number" placeholder={t.maxPrice} value={maxP} onChange={e => setMaxP(e.target.value)} className={inp + ' flex-1'} />
@@ -92,12 +92,12 @@ export default function Shop() {
         {/* Category pills */}
         <div className="flex gap-2 flex-wrap mb-6">
           <button onClick={() => { setCat(''); setSp(search ? {search} : {}); setVisible(PAGE); }}
-            className={'px-4 py-1.5 rounded-xl text-sm font-semibold transition-all ' + (!cat ? 'bg-orange-500 text-white shadow-sm' : dm ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200')}>
+            className={'px-4 py-1.5 rounded-xl text-sm font-semibold transition-all ' + (!cat ? 'bg-orange-500 text-white shadow-sm' : dm ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200')}>
             {t.allCategories}
           </button>
           {cats.map(c => (
             <button key={c} onClick={() => { setCat(c); setSp({category:c}); setVisible(PAGE); }}
-              className={'px-4 py-1.5 rounded-xl text-sm font-semibold transition-all ' + (cat===c ? 'bg-orange-500 text-white shadow-sm' : dm ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200')}>
+              className={'px-4 py-1.5 rounded-xl text-sm font-semibold transition-all ' + (cat===c ? 'bg-orange-500 text-white shadow-sm' : dm ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200')}>
               {c}
             </button>
           ))}
@@ -108,7 +108,7 @@ export default function Shop() {
           <div className={'text-center py-24 rounded-2xl border ' + card}>
             <div className="text-5xl mb-4">🔍</div>
             <h3 className={'text-lg font-bold mb-2 ' + (dm ? 'text-white' : 'text-slate-800')}>{t.noProducts}</h3>
-            <p className={'mb-5 text-sm ' + (dm ? 'text-slate-500' : 'text-slate-500')}>{t.tryDifferent}</p>
+            <p className={'mb-5 text-sm ' + (dm ? 'text-zinc-500' : 'text-zinc-500')}>{t.tryDifferent}</p>
             <button onClick={clear} className="bg-orange-500 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-orange-600">{t.clearFilters}</button>
           </div>
         ) : (
