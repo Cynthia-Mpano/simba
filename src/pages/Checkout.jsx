@@ -115,6 +115,29 @@ export default function Checkout() {
     setBusy(false);
   };
 
+  if (!user) return (
+    <div className={'min-h-screen flex items-center justify-center px-4 ' + (dm ? 'bg-zinc-950' : 'bg-zinc-50')}>
+      <div className={'w-full max-w-sm rounded-2xl border p-8 text-center ' + (dm ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-100 shadow-sm')}>
+        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <ShoppingBag className="text-orange-500" size={30} />
+        </div>
+        <h2 className={'text-xl font-black mb-2 ' + (dm ? 'text-white' : 'text-zinc-900')}>Sign in to Checkout</h2>
+        <p className={'text-sm mb-6 leading-relaxed ' + (dm ? 'text-zinc-400' : 'text-zinc-500')}>
+          You need an account to place an order. Sign in or create a free account to continue.
+        </p>
+        <Link to="/signin" className="block w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl font-bold text-sm transition-colors mb-3">
+          Sign In
+        </Link>
+        <Link to="/signup" className={'block w-full py-3 rounded-xl font-semibold text-sm border transition-colors ' + (dm ? 'border-zinc-700 text-zinc-300 hover:bg-zinc-800' : 'border-zinc-200 text-zinc-700 hover:bg-zinc-50')}>
+          Create Account
+        </Link>
+        <Link to="/cart" className={'block mt-4 text-xs hover:text-orange-500 transition-colors ' + (dm ? 'text-zinc-500' : 'text-zinc-400')}>
+          ← Back to Cart
+        </Link>
+      </div>
+    </div>
+  );
+
   if (cart.length === 0 && step < 3) return (
     <div className={'min-h-screen flex items-center justify-center ' + (dm ? 'bg-zinc-950 text-white' : 'bg-slate-50')}>
       <div className="text-center p-8">

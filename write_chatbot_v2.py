@@ -1,3 +1,6 @@
+﻿# Write complete new Chatbot.jsx - fixed version
+code = open("simba-supermarket/src/components/Chatbot.jsx", "w", encoding="utf-8")
+code.write(r"""
 import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle, X, Send, Bot, User } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -281,3 +284,6 @@ export default function Chatbot() {
     </>
   );
 }
+""".lstrip("\n"))
+code.close()
+print("Chatbot written:", len(open("simba-supermarket/src/components/Chatbot.jsx",encoding="utf-8").readlines()), "lines")

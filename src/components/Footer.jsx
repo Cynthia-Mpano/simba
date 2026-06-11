@@ -25,11 +25,13 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <h3 className="text-white font-semibold text-sm mb-4">Our Branches</h3>
-          <ul className="space-y-1.5 text-xs">
-            {branches.map(b => (
-              <li key={b} className="flex items-center gap-1.5"><MapPin size={9} className="text-orange-400 flex-shrink-0" />{b}</li>
-            ))}
+          <h3 className="text-white font-semibold text-sm mb-4">Opening Hours</h3>
+          <ul className="space-y-2 text-sm">
+            <li>Mon - Fri: 8:00 AM - 9:00 PM</li>
+            <li>Saturday: 8:00 AM - 8:00 PM</li>
+            <li>Sunday: 9:00 AM - 7:00 PM</li>
+            <li className="text-orange-400 font-medium mt-3">11 Branches across Kigali</li>
+            <li className="text-xs text-zinc-500 mt-1">Use Branch selector in nav to filter products</li>
           </ul>
         </div>
         <div>

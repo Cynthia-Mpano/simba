@@ -19,6 +19,7 @@ export default function Shop() {
   const [visible, setVisible] = useState(PAGE);
   const [loading, setLoading] = useState(false);
   const dm = darkMode;
+  const branch = sp.get('branch') || '';
 
   const cats = useMemo(() => [...new Set(productsData.products.map(p => p.category))], []);
 
@@ -26,6 +27,13 @@ export default function Shop() {
 
   const filtered = useMemo(() => {
     let list = productsData.products;
+    // Branch filter — simulate branch-specific inventory by subcategoryId ranges
+    if (branch) {
+      const branchSeeds = { "Centenary":0,"Gishushu":1,"Kimironko":2,"Kicukiro":3,"Kigali Heights":4,"UTC":5,"Gacuriro":6,"Gikondo":7,"Sonatube":8,"Kisimenti":9,"Rebero":10 };
+      const seed = branchSeeds[branch] ?? 0;
+      // Each branch "stocks" ~70% of all products, offset by seed for variety
+      list = list.filter((_, i) => (i + seed) % 10 !== 0);
+    }
     if (search) list = list.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase()));
     if (cat) list = list.filter(p => p.category === cat);
     if (minP) list = list.filter(p => p.price >= Number(minP));
@@ -52,8 +60,18 @@ export default function Shop() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
         <div className="mb-6">
-          <h1 className={'text-2xl font-black ' + (dm ? 'text-white' : 'text-slate-900')}>{t.shop}</h1>
-          <p className={'text-sm mt-1 ' + (dm ? 'text-zinc-500' : 'text-zinc-500')}>{filtered.length} {t.products}{cat ? ' in '+cat : ''}</p>
+          <h1 className={'text-2xl font-black ' + (dm ? 'text-white' : 'text-zinc-900')}>{t.shop}</h1>
+          <p className={'text-sm mt-1 ' + (dm ? 'text-zinc-500' : 'text-zinc-500')}>
+            {filtered.length} {t.products}{cat ? ' in ' + cat : ''}{branch ? ' · ' + branch + ' Branch' : ''}
+          </p>
+          {branch && (
+            <div className="mt-3 inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-700 text-sm px-4 py-2.5 rounded-xl">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Showing products at <strong className="ml-1">Simba {branch}</strong>
+              <button onClick={() => { const p = {}; if (search) p.search = search; if (cat) p.category = cat; setSp(p); }}
+                className="ml-2 text-orange-500 hover:text-orange-700 font-bold">&#x2715;</button>
+            </div>
+          )}
         </div>
 
         {/* Filter bar */}

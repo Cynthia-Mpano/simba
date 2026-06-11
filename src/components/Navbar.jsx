@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { ShoppingCart, Search, Menu, X, Sun, Moon, Globe, User, LogOut, ChevronDown, LayoutDashboard } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, Sun, Moon, Globe, User, LogOut, ChevronDown, LayoutDashboard, MapPin, ChevronRight } from "lucide-react";
 import { useApp } from "../context/AppContext";
 
 export default function Navbar() {
@@ -9,6 +9,9 @@ export default function Navbar() {
   const [langOpen, setLangOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
   const [q, setQ] = useState("");
+  const [branchOpen, setBranchOpen] = useState(false);
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const branchRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const langRef = useRef(null);
@@ -20,13 +23,14 @@ export default function Navbar() {
     const fn = e => {
       if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
       if (userRef.current && !userRef.current.contains(e.target)) setUserOpen(false);
+      if (branchRef.current && !branchRef.current.contains(e.target)) setBranchOpen(false);
     };
     document.addEventListener("mousedown", fn);
     return () => document.removeEventListener("mousedown", fn);
   }, []);
 
   const go = e => { e.preventDefault(); if (q.trim()) { navigate(`/shop?search=${encodeURIComponent(q.trim())}`); setQ(""); setOpen(false); } };
-  const links = [["/","Home"],["/shop",t.shop],["/about",t.about],["/contact",t.contact]];
+  const links = [["/shop",t.shop],["/about",t.about],["/contact",t.contact]];
   const isActive = p => p === "/" ? location.pathname === "/" : location.pathname.startsWith(p);
   const langs = [{ code:"en", label:"English", flag:"🇬🇧" },{ code:"fr", label:"Français", flag:"🇫🇷" },{ code:"rw", label:"Kinyarwanda", flag:"🇷🇼" }];
 
@@ -55,8 +59,24 @@ export default function Navbar() {
         {/* Desktop links */}
         <div className="hidden lg:flex items-center gap-0.5 ml-2">
           {links.map(([p,l]) => (
-            <Link key={p} to={p} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${isActive(p) ? "bg-orange-50 text-orange-600" : dm ? "text-zinc-300 hover:bg-zinc-800" : "text-slate-600 hover:bg-slate-50"}`}>{l}</Link>
+            <Link key={p} to={p} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${isActive(p) ? "bg-orange-50 text-orange-600" : dm ? "text-zinc-300 hover:bg-zinc-800" : "text-zinc-600 hover:bg-zinc-50"}`}>{l}</Link>
           ))}
+          <div className="relative" ref={branchRef}>
+            <button onClick={() => setBranchOpen(!branchOpen)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${selectedBranch ? "text-orange-600 bg-orange-50" : dm ? "text-zinc-300 hover:bg-zinc-800" : "text-zinc-600 hover:bg-zinc-50"}`}>
+              <MapPin size={13} />
+              {selectedBranch || "Branch"}
+              <ChevronDown size={12} />
+            </button>
+            {branchOpen && (
+              <div className={`absolute left-0 top-10 w-52 rounded-xl shadow-xl border z-50 overflow-hidden ${dm ? "bg-zinc-900 border-zinc-700" : "bg-white border-zinc-100"}`}>
+                <button onClick={() => { setSelectedBranch(""); setBranchOpen(false); navigate("/shop"); }} className={`w-full text-left px-4 py-2.5 text-sm font-semibold ${!selectedBranch ? "bg-orange-50 text-orange-600" : dm ? "text-zinc-300 hover:bg-zinc-800" : "text-zinc-700 hover:bg-zinc-50"}`}>All Branches</button>
+                {["Centenary","Gishushu","Kimironko","Kicukiro","Kigali Heights","UTC","Gacuriro","Gikondo","Sonatube","Kisimenti","Rebero"].map(b => (
+                  <button key={b} onClick={() => { setSelectedBranch(b); setBranchOpen(false); navigate("/shop?branch="+encodeURIComponent(b)); }} className={`w-full text-left px-4 py-2 text-xs flex items-center gap-2 ${selectedBranch===b ? "bg-orange-50 text-orange-600 font-semibold" : dm ? "text-zinc-300 hover:bg-zinc-800" : "text-zinc-700 hover:bg-zinc-50"}`}><MapPin size={10} className="text-orange-400" />{b}</button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Search */}
