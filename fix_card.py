@@ -1,4 +1,4 @@
-
+﻿code = """
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Check } from "lucide-react";
@@ -94,3 +94,7 @@ export default function ProductCard({ product }) {
     </Link>
   );
 }
+""".lstrip("\\n")
+
+open("simba-supermarket/src/components/ProductCard.jsx","w",encoding="utf-8").write(code)
+print("ProductCard done:", len(code.splitlines()), "lines")
